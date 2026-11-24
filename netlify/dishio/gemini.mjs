@@ -10,10 +10,12 @@ const MAX_SUBSTITUTES = 3;
 const STEP_PREFIX = /^\s*(step\s*)?\d+\s*[:.)\-–]\s*/i;
 
 export class GeminiError extends Error {
-  constructor(code, message, status = 502) {
+  constructor(code, message, status = 502, upstreamStatus = null) {
     super(message);
     this.code = code;
     this.status = status;
+    // HTTP status Gemini itself answered with (e.g. 503), to help find problems.
+    this.upstreamStatus = upstreamStatus;
   }
 }
 
@@ -82,6 +84,14 @@ export class GeminiService {
 }
 
 function errorFromHttp(status, detail) {
+  // Gemini's own error text goes to the Netlify function log (never the key).
+  console.error(`Gemini API error ${status}: ${String(detail).slice(0, 400)}`);
+  const err = errorFromStatus(status, detail);
+  err.upstreamStatus = status;
+  return err;
+}
+
+function errorFromStatus(status, detail) {
   const lowered = String(detail).toLowerCase();
   if (status === 401 || status === 403 || lowered.includes("api_key_invalid") || lowered.includes("api key not valid")) {
     return new GeminiError("AI_KEY_INVALID", "The Gemini API key was rejected. Check GEMINI_API_KEY.", 503);

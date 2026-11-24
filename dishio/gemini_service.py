@@ -8,6 +8,7 @@ and never leaves the server.
 import json
 import re
 import socket
+import sys
 import urllib.error
 import urllib.request
 
@@ -94,6 +95,8 @@ def _error_from_http(err: urllib.error.HTTPError) -> GeminiError:
         detail = err.read().decode("utf-8", "replace")
     except Exception:  # pragma: no cover - defensive
         detail = ""
+    # Gemini's own error text, shown in the Dishio window (never the key).
+    print(f"Gemini API error {err.code}: {detail[:400]}", file=sys.stderr)
     lowered = detail.lower()
 
     if err.code in (401, 403) or "api_key_invalid" in lowered or "api key not valid" in lowered:

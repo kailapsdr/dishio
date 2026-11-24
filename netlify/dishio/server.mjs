@@ -97,7 +97,10 @@ export function createServer(env, { fetchImpl = globalThis.fetch, clock } = {}) 
 
   const fromError = (err) => {
     if (err instanceof ValidationError) return errorResponse(err.code, err.message, 400, err.details);
-    if (err instanceof GeminiError) return errorResponse(err.code, err.message, err.status);
+    if (err instanceof GeminiError) {
+      const details = err.upstreamStatus ? { upstreamStatus: err.upstreamStatus } : {};
+      return errorResponse(err.code, err.message, err.status, details);
+    }
     console.error("Dishio server error:", err && err.name, err && err.message);
     return errorResponse("SERVER_ERROR", "Something went wrong on the server.", 500);
   };
