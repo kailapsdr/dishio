@@ -42,14 +42,14 @@ def http_error(code, body=""):
 
 
 def service(transport):
-    return GeminiService(api_key="secret-key", model="gemini-2.5-flash", transport=transport)
+    return GeminiService(api_key="secret-key", model="gemini-3.5-flash-lite", transport=transport)
 
 
 def test_request_is_built_safely():
     transport = FakeTransport(gemini_reply(json.dumps({"recipes": [RECIPE]})))
     service(transport).generate_recipes("hello")
     call = transport.calls[0]
-    assert "gemini-2.5-flash:generateContent" in call["url"]
+    assert "gemini-3.5-flash-lite:generateContent" in call["url"]
     assert "secret-key" not in call["url"]  # key goes in a header, not the URL
     assert call["headers"]["x-goog-api-key"] == "secret-key"
     assert call["body"]["generationConfig"]["responseMimeType"] == "application/json"

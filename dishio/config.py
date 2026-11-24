@@ -29,7 +29,7 @@ def _int(name: str, default: int, minimum: int = 1) -> int:
 @dataclass(frozen=True)
 class Settings:
     gemini_api_key: str = field(default="", repr=False)  # repr=False: never printed
-    gemini_model: str = "gemini-2.5-flash"
+    gemini_model: str = "gemini-3.5-flash-lite"
     gemini_timeout_seconds: int = 60
     rate_limit_per_minute: int = 5
     rate_limit_per_day: int = 50
@@ -55,7 +55,7 @@ def load_settings(env_file: Path | None = None) -> Settings:
     load_dotenv(env_file or PROJECT_ROOT / ".env", override=False)
     return Settings(
         gemini_api_key=os.getenv("GEMINI_API_KEY", "").strip(),
-        gemini_model=os.getenv("GEMINI_MODEL", "").strip() or "gemini-2.5-flash",
+        gemini_model=os.getenv("GEMINI_MODEL", "").strip() or "gemini-3.5-flash-lite",
         gemini_timeout_seconds=_int("GEMINI_TIMEOUT_SECONDS", 60),
         rate_limit_per_minute=_int("RATE_LIMIT_PER_MINUTE", 5),
         rate_limit_per_day=_int("RATE_LIMIT_PER_DAY", 50),

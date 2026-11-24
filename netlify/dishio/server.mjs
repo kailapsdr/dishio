@@ -36,7 +36,7 @@ export function loadSettings(env) {
   return {
     geminiApiKey: key,
     geminiConfigured: !PLACEHOLDER_KEYS.has(key.toLowerCase()),
-    geminiModel: String(env.GEMINI_MODEL ?? "").trim() || "gemini-2.5-flash",
+    geminiModel: String(env.GEMINI_MODEL ?? "").trim() || "gemini-3.5-flash-lite",
     // Netlify stops a function after 60 seconds, so wait a bit less.
     geminiTimeoutMs: Math.min(number(env, "GEMINI_TIMEOUT_SECONDS", 50), 55) * 1000,
     ratePerMinute: number(env, "RATE_LIMIT_PER_MINUTE", 5),
