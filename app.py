@@ -1,7 +1,7 @@
 """Dishify server.
 
-Run it with:   python app.py
-Then open:     http://localhost:5000
+On your laptop:  python app.py   (then open http://localhost:5000)
+Online (Render): gunicorn "app:create_app()"   (see render.yaml)
 
 This one Flask server does two jobs:
   1. serves the web app (everything in the "static" folder), and
@@ -80,6 +80,15 @@ def create_app(settings: Settings | None = None, gemini: GeminiService | None = 
     swap_limiter = RateLimiter(settings.substitute_per_minute, settings.substitute_per_day)
     swap_cache: dict[str, dict] = {}
 
+    def visitor():
+        """Who is asking, for the per-visitor limits."""
+        if settings.client_ip_header:
+            forwarded = request.headers.get(settings.client_ip_header, "")
+            first = forwarded.split(",")[0].strip()[:64]
+            if first:
+                return first
+        return request.remote_addr or "unknown"
+
     def rate_limited(limit):
         response, status = error_response(
             "RATE_LIMITED",
@@ -148,7 +157,7 @@ def create_app(settings: Settings | None = None, gemini: GeminiService | None = 
                 503,
             )
 
-        limit = limiter.hit(request.remote_addr or "unknown")
+        limit = limiter.hit(visitor())
         if not limit.allowed:
             response, status = error_response(
                 "RATE_LIMITED",
@@ -190,7 +199,7 @@ def create_app(settings: Settings | None = None, gemini: GeminiService | None = 
 
         if not settings.gemini_configured:
             return not_configured()
-        limit = shelf_limiter.hit(request.remote_addr or "unknown")
+        limit = shelf_limiter.hit(visitor())
         if not limit.allowed:
             return rate_limited(limit)
 
@@ -220,7 +229,7 @@ def create_app(settings: Settings | None = None, gemini: GeminiService | None = 
             return jsonify(swap_cache[key])
         if not settings.gemini_configured:
             return not_configured()
-        limit = swap_limiter.hit(request.remote_addr or "unknown")
+        limit = swap_limiter.hit(visitor())
         if not limit.allowed:
             return rate_limited(limit)
         try:

@@ -1,0 +1,19 @@
+# How Render runs Dishify (read by Render when you pick "New > Blueprint").
+# The Gemini key is NOT written here: Render asks for it once, privately.
+services:
+  - type: web
+    name: dishify
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    # 1 worker so the per-visitor limits are shared; 120 s because 5 recipes
+    # can take Gemini more than the default 30 s.
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 "app:create_app()"
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CLIENT_IP_HEADER
+        value: CF-Connecting-IP

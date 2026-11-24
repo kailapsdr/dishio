@@ -40,6 +40,10 @@ class Settings:
     max_ingredients_chars: int = 300
     host: str = "127.0.0.1"
     port: int = 5000
+    # Online hosts put a proxy in front of the app, so every visitor would
+    # look like the same address. This names the header that carries the
+    # visitor's real address (on Render: CF-Connecting-IP). Empty = not used.
+    client_ip_header: str = ""
 
     @property
     def gemini_configured(self) -> bool:
@@ -62,4 +66,5 @@ def load_settings(env_file: Path | None = None) -> Settings:
         max_ingredients_chars=_int("MAX_INGREDIENTS_CHARS", 300, minimum=20),
         host=os.getenv("HOST", "").strip() or "127.0.0.1",
         port=_int("PORT", 5000),
+        client_ip_header=os.getenv("CLIENT_IP_HEADER", "").strip(),
     )

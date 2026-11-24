@@ -186,3 +186,21 @@ def test_use_first_from_my_fridge_reaches_gemini(client, fake_gemini):
     assert "first: spinach." in fake_gemini.prompts[-1]
     assert "nope" not in fake_gemini.prompts[-1]
 
+
+def test_online_limits_count_each_visitor_separately():
+    settings = make_settings(rate_limit_per_minute=1, client_ip_header="CF-Connecting-IP")
+    c = create_app(settings, gemini=FakeGemini()).test_client()
+    ok = {"ingredients": "egg"}
+    a = {"CF-Connecting-IP": "203.0.113.5"}
+    b = {"CF-Connecting-IP": "198.51.100.7, 10.0.0.1"}
+    assert c.post("/api/recipes", json=ok, headers=a).status_code == 200
+    assert c.post("/api/recipes", json=ok, headers=a).status_code == 429
+    assert c.post("/api/recipes", json=ok, headers=b).status_code == 200
+
+
+def test_gunicorn_can_build_the_app_from_the_factory():
+    from app import create_app as factory
+
+    app = factory(make_settings())
+    assert app.test_client().get("/api/health").status_code == 200
+

@@ -2,5 +2,8 @@
 Flask>=3.0,<4
 python-dotenv>=1.0,<2
 
+# Server used online (Render). Not needed on your laptop, but harmless.
+gunicorn>=23,<24
+
 # Hanya untuk menjalankan tes otomatis.
 pytest>=8,<10

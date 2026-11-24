@@ -79,13 +79,28 @@ Dishify akan muncul di Start Menu dan desktop seperti aplikasi biasa. **Catatan:
 
 ---
 
+## Memasang online (Render) supaya bisa dibuka dan diinstal dari HP
+
+Proyek ini sudah disiapkan untuk **Render** (gratis, tanpa kartu kredit). File `render.yaml` berisi semua pengaturannya, jadi kamu cukup memilih repo dan mengisi API key.
+
+1. Buka https://render.com, lalu daftar atau masuk memakai **akun GitHub**-mu.
+2. Klik **New → Blueprint**, lalu pilih repo **dishify**.
+3. Render akan menanyakan **GEMINI_API_KEY**. Tempel key Gemini-mu di sana (key ini disimpan rahasia oleh Render, tidak masuk GitHub).
+4. Klik **Apply** atau **Deploy**, lalu tunggu beberapa menit sampai statusnya **Live**.
+5. Buka alamat yang diberikan Render (misalnya `https://dishify-xxxx.onrender.com`) di Chrome HP, lalu pilih **Add to Home screen / Install app**.
+
+Hal yang perlu diketahui:
+- **Situs "tidur" kalau 15 menit tidak dipakai.** Pembukaan berikutnya butuh sekitar 1 menit untuk bangun. Setelah itu normal lagi.
+- **Update otomatis.** Setiap kali kamu push perubahan lewat GitHub Desktop, Render memasang versi barunya sendiri.
+- **Alamatnya publik.** Siapa pun yang tahu alamatnya bisa memakai Dishify, dan pemakaiannya memakai kuota Gemini-mu. Batas per pengunjung tetap berlaku.
+
 ## Membuka dari HP
 
 - **Memakai saja (tanpa instal)**: laptop dan HP harus tersambung ke Wi-Fi yang sama.
   1. Di file `.env`, ubah `HOST=127.0.0.1` menjadi `HOST=0.0.0.0`, lalu jalankan ulang Dishify. Kalau Windows bertanya soal firewall, izinkan untuk jaringan *Private*.
   2. Cari alamat IP laptop: di Command Prompt ketik `ipconfig`, lalu lihat baris **IPv4 Address** (misalnya `192.168.1.5`).
   3. Di HP, buka `http://192.168.1.5:5000`.
-- **Instal ke layar utama HP**: browser hanya mengizinkan instalasi dari alamat **https://**. Karena itu Dishify perlu dipasang online terlebih dahulu (tahap berikutnya). Lewat alamat `http://192.168...`, aplikasi tetap bisa dipakai, tapi tidak bisa diinstal.
+- **Instal ke layar utama HP**: browser hanya mengizinkan instalasi dari alamat **https://**. Pakai alamat Render (lihat bagian di atas). Lewat alamat `http://192.168...`, aplikasi tetap bisa dipakai, tapi tidak bisa diinstal.
 
 ---
 
@@ -147,6 +162,8 @@ dishify-pwa/
 │   ├── manifest.webmanifest, sw.js, icons/  ← agar bisa diinstal (PWA)
 ├── tests/                 ← tes otomatis
 ├── requirements.txt       ← daftar paket Python
+├── render.yaml            ← pengaturan pemasangan online di Render
+├── .python-version        ← versi Python yang dipakai Render
 ├── .env.example           ← contoh pengaturan (tanpa key)
 └── .env                   ← pengaturan asli + key kamu (dibuat sendiri, rahasia)
 ```
