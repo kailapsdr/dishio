@@ -1,0 +1,6 @@
+# Paket Python yang dibutuhkan Dishify.
+Flask>=3.0,<4
+python-dotenv>=1.0,<2
+
+# Hanya untuk menjalankan tes otomatis.
+pytest>=8,<10

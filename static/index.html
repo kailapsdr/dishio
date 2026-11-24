@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Dishify</title>
+    <meta name="description" content="Cook what you have or what you crave. Easy recipes for any ingredient and any budget." />
+    <meta name="theme-color" content="#2E5E47" />
+
+    <!-- PWA: lets the app be installed on the home screen -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Dishify" />
+
+    <!-- Fonts (same as the Flutter app). Without internet, system fonts are used. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="module" src="/js/app.js"></script>
+  </head>
+  <body>
+    <div class="shell">
+      <!-- The kitchen side: green tegel wall with a kitchen notepad (the form) on it -->
+      <aside class="panel">
+        <header class="brand">
+          <span class="brand-mark" data-icon="logo"></span>
+          <span class="brand-name" data-text="appName"></span>
+          <span class="brand-tagline" data-text="tagline"></span>
+          <div class="brand-actions">
+          <button type="button" class="fridge-btn saved-btn" id="open-saved">
+            <span class="fridge-btn-icon" data-icon="heart"></span>
+            <span data-text="savedButton"></span>
+            <span class="saved-count" id="saved-count" hidden></span>
+          </button>
+          <button type="button" class="fridge-btn" id="open-fridge">
+            <span class="fridge-btn-icon" data-icon="fridge"></span>
+            <span data-text="fridgeButton"></span>
+            <span class="fridge-badge" id="fridge-badge" hidden></span>
+          </button>
+          </div>
+        </header>
+
+        <form class="kitchen" id="recipe-form" novalidate autocomplete="off">
+          <label class="kitchen-question" for="ingredients" data-text="inputTitle"></label>
+
+          <div class="notepad-wrap">
+          <div class="notepad">
+            <div class="note-rings" aria-hidden="true"></div>
+
+            <div class="note-paper">
+              <textarea id="ingredients" name="ingredients" rows="4" dir="auto" data-placeholder="inputPlaceholder"></textarea>
+              <div class="note-paper-foot">
+                <button type="button" class="link-btn" id="fill-from-fridge" hidden>
+                  <span data-icon="fridge"></span><span id="fill-from-fridge-label"></span>
+                </button>
+                <div class="char-count" id="char-count" aria-live="polite"></div>
+              </div>
+            </div>
+
+            <div class="note-row">
+              <label class="note-label" for="country" data-text="locationLabel"></label>
+              <span class="inline-select">
+                <select id="country" name="country"></select>
+              </span>
+            </div>
+            <p class="note-hint" id="country-hint" data-text="locationHint"></p>
+
+            <fieldset class="note-list">
+              <legend class="note-heading" data-text="situationLabel"></legend>
+              <div class="mode-chips" id="mode-chips"></div>
+            </fieldset>
+
+            <div class="budget-block">
+              <label class="budget-toggle">
+                <input type="checkbox" id="use-budget" />
+                <span class="tick" aria-hidden="true"></span>
+                <span class="chip-icon" data-icon="wallet"></span>
+                <span data-text="budgetToggle"></span>
+              </label>
+              <div class="note-row budget-field" id="budget-field" hidden>
+                <label class="note-label" for="budget" data-text="budgetLabel"></label>
+                <span class="budget-input">
+                  <span class="budget-currency" id="budget-currency"></span>
+                  <input id="budget" name="budget" type="text" inputmode="decimal" autocomplete="off" aria-describedby="budget-hint" />
+                </span>
+              </div>
+              <p class="note-hint budget-hint" id="budget-hint" aria-live="polite" hidden></p>
+            </div>
+
+            <button type="submit" class="btn-cook" id="generate">
+              <span class="btn-icon" aria-hidden="true"></span>
+              <span class="btn-label" data-text="generateButton"></span>
+            </button>
+          </div>
+          </div>
+        </form>
+
+        <div class="tegel-strip" aria-hidden="true"></div>
+      </aside>
+
+      <!-- Handle to make the two sides wider or narrower (laptops only) -->
+      <div class="splitter" id="splitter" role="separator" aria-orientation="vertical" tabindex="0" data-label="resizeHandle"></div>
+
+      <!-- The table: idle / loading / recipes / error -->
+      <main class="table" id="view" aria-live="polite"></main>
+    </div>
+
+    <!-- My fridge: food you have, with how long it will keep -->
+    <dialog class="fridge" id="fridge" aria-labelledby="fridge-title">
+      <div class="fridge-door">
+        <header class="fridge-head">
+          <div>
+            <h2 class="fridge-title" id="fridge-title" data-text="fridgeTitle"></h2>
+            <p class="fridge-summary" id="fridge-summary" aria-live="polite"></p>
+          </div>
+          <button type="button" class="fridge-close" id="close-fridge" data-icon="close" data-label="closeFridge"></button>
+        </header>
+
+        <form class="fridge-add" id="fridge-add" novalidate autocomplete="off">
+          <label class="fridge-label" for="item-name" data-text="addItemLabel"></label>
+          <input class="item-name" id="item-name" type="text" dir="auto" />
+          <div class="keeps">
+            <span class="keeps-label" id="keeps-label" data-text="keepsLabel"></span>
+            <div class="stepper" role="group" aria-labelledby="keeps-label">
+              <button type="button" class="step-btn" id="keeps-minus" data-label="keepsLess">&minus;</button>
+              <output class="keeps-days" id="keeps-days" aria-live="polite"></output>
+              <button type="button" class="step-btn" id="keeps-plus" data-label="keepsMore">+</button>
+            </div>
+            <span class="keeps-date" id="keeps-date"></span>
+          </div>
+          <p class="fridge-hint" id="item-hint" aria-live="polite"></p>
+          <button type="submit" class="btn-add">
+            <span data-icon="plus"></span><span data-text="addButton"></span>
+          </button>
+        </form>
+
+        <div class="fridge-inside" id="fridge-shelves"></div>
+
+        <div class="fridge-foot">
+          <button type="button" class="btn-cook" id="cook-with-fridge" data-text="cookWithFridge"></button>
+          <p class="fridge-note" id="cook-with-fridge-note" data-text="cookWithFridgeNote" hidden></p>
+        </div>
+      </div>
+    </dialog>
+
+    <noscript>
+      <p class="noscript">Dishify needs JavaScript to work. Please turn it on in your browser.</p>
+    </noscript>
+  </body>
+</html>

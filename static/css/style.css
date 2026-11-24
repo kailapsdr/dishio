@@ -1,0 +1,2010 @@
+/* ==========================================================================
+   Dishify — styles
+
+   Two ideas from Indonesian home kitchens:
+   - the "tegel kunci" cement floor tile, used as the green wall behind the
+     form and as one full-colour strip;
+   - the white enamel "blirik" plate with a speckled green rim, on which the
+     recipes are served.
+   ========================================================================== */
+
+:root {
+  --enamel: #f6f7f3; /* page */
+  --white: #ffffff;
+  --rim: #2e5e47; /* blirik green */
+  --rim-dark: #234a38;
+  --ink: #1b2a23;
+  --ink-soft: #56645c;
+  --line: #c9d5cd;
+  --celadon: #e2ece5;
+  --turmeric: #e1a23a;
+  --turmeric-soft: #fbefd6;
+  --chili: #c2391f;
+  --chili-dark: #a22e17;
+
+  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+
+  /* The speckled enamel rim, used by plates. */
+  --speckle:
+    radial-gradient(circle, rgba(255, 255, 255, 0.85) 0 0.9px, transparent 1.5px) 0 0 / 13px 17px,
+    radial-gradient(circle, rgba(255, 255, 255, 0.5) 0 0.7px, transparent 1.2px) 6px 9px / 19px 11px,
+    radial-gradient(circle, rgba(255, 255, 255, 0.35) 0 1.2px, transparent 1.8px) 11px 3px / 29px 23px,
+    radial-gradient(circle, rgba(10, 30, 20, 0.55) 0 1px, transparent 1.7px) 3px 5px / 17px 13px,
+    radial-gradient(circle, rgba(10, 30, 20, 0.4) 0 0.8px, transparent 1.4px) 9px 12px / 23px 31px,
+    var(--rim);
+
+  /* Tegel tiles (generated SVG). */
+  --tegel-subtle: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22 viewBox=%220 0 80 80%22%3E %3Crect width=%2280%22 height=%2280%22 fill=%22%232e5e47%22/%3E %3Ccircle cx=%220%22 cy=%220%22 r=%2222%22 fill=%22%2329563f%22/%3E%3Ccircle cx=%2280%22 cy=%220%22 r=%2222%22 fill=%22%2329563f%22/%3E %3Ccircle cx=%220%22 cy=%2280%22 r=%2222%22 fill=%22%2329563f%22/%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%2222%22 fill=%22%2329563f%22/%3E %3Ccircle cx=%220%22 cy=%220%22 r=%2212%22 fill=%22%232e5e47%22/%3E%3Ccircle cx=%2280%22 cy=%220%22 r=%2212%22 fill=%22%232e5e47%22/%3E %3Ccircle cx=%220%22 cy=%2280%22 r=%2212%22 fill=%22%232e5e47%22/%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%2212%22 fill=%22%232e5e47%22/%3E %3Ccircle cx=%220%22 cy=%220%22 r=%225%22 fill=%22%233b7458%22/%3E%3Ccircle cx=%2280%22 cy=%220%22 r=%225%22 fill=%22%233b7458%22/%3E %3Ccircle cx=%220%22 cy=%2280%22 r=%225%22 fill=%22%233b7458%22/%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%225%22 fill=%22%233b7458%22/%3E %3Cellipse cx=%2240%22 cy=%2225%22 rx=%227%22 ry=%2213%22 fill=%22%23336a50%22/%3E%3Cellipse cx=%2240%22 cy=%2255%22 rx=%227%22 ry=%2213%22 fill=%22%23336a50%22/%3E %3Cellipse cx=%2225%22 cy=%2240%22 rx=%2213%22 ry=%227%22 fill=%22%23336a50%22/%3E%3Cellipse cx=%2255%22 cy=%2240%22 rx=%2213%22 ry=%227%22 fill=%22%23336a50%22/%3E %3Ccircle cx=%2240%22 cy=%2240%22 r=%226%22 fill=%22%233b7458%22/%3E %3Cpath d=%22M40 0l5 5-5 5-5-5zM40 80l5-5-5-5-5 5zM0 40l5-5 5 5-5 5zM80 40l-5-5-5 5 5 5z%22 fill=%22%2329563f%22/%3E %3Cpath d=%22M0 .5H80M.5 0V80%22 stroke=%22%232a5841%22 stroke-width=%221%22/%3E %3C/svg%3E");
+  --tegel-color: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22 viewBox=%220 0 80 80%22%3E %3Crect width=%2280%22 height=%2280%22 fill=%22%23efebdd%22/%3E %3Ccircle cx=%220%22 cy=%220%22 r=%2222%22 fill=%22%232e5e47%22/%3E%3Ccircle cx=%2280%22 cy=%220%22 r=%2222%22 fill=%22%232e5e47%22/%3E %3Ccircle cx=%220%22 cy=%2280%22 r=%2222%22 fill=%22%232e5e47%22/%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%2222%22 fill=%22%232e5e47%22/%3E %3Ccircle cx=%220%22 cy=%220%22 r=%2212%22 fill=%22%23efebdd%22/%3E%3Ccircle cx=%2280%22 cy=%220%22 r=%2212%22 fill=%22%23efebdd%22/%3E %3Ccircle cx=%220%22 cy=%2280%22 r=%2212%22 fill=%22%23efebdd%22/%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%2212%22 fill=%22%23efebdd%22/%3E %3Ccircle cx=%220%22 cy=%220%22 r=%225%22 fill=%22%23c2391f%22/%3E%3Ccircle cx=%2280%22 cy=%220%22 r=%225%22 fill=%22%23c2391f%22/%3E %3Ccircle cx=%220%22 cy=%2280%22 r=%225%22 fill=%22%23c2391f%22/%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%225%22 fill=%22%23c2391f%22/%3E %3Cellipse cx=%2240%22 cy=%2225%22 rx=%227%22 ry=%2213%22 fill=%22%23e1a23a%22/%3E%3Cellipse cx=%2240%22 cy=%2255%22 rx=%227%22 ry=%2213%22 fill=%22%23e1a23a%22/%3E %3Cellipse cx=%2225%22 cy=%2240%22 rx=%2213%22 ry=%227%22 fill=%22%23e1a23a%22/%3E%3Cellipse cx=%2255%22 cy=%2240%22 rx=%2213%22 ry=%227%22 fill=%22%23e1a23a%22/%3E %3Ccircle cx=%2240%22 cy=%2240%22 r=%226%22 fill=%22%23c2391f%22/%3E %3Cpath d=%22M40 0l5 5-5 5-5-5zM40 80l5-5-5-5-5 5zM0 40l5-5 5 5-5 5zM80 40l-5-5-5 5 5 5z%22 fill=%22%232e5e47%22/%3E %3Cpath d=%22M0 .5H80M.5 0V80%22 stroke=%22%23d8d2bf%22 stroke-width=%221%22/%3E %3C/svg%3E");
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--enamel);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+svg {
+  display: block;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+:focus-visible {
+  outline: 3px solid var(--turmeric);
+  outline-offset: 2px;
+}
+
+/* ---------- Layout ---------------------------------------------------- */
+.shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  padding: max(18px, env(safe-area-inset-top)) 18px 0;
+  background: var(--tegel-subtle) 0 0 / 80px 80px, var(--rim);
+  color: var(--enamel);
+}
+
+.table {
+  min-width: 0;
+  padding: 32px 20px max(48px, env(safe-area-inset-bottom));
+}
+
+@media (min-width: 960px) {
+  /* --panel-width is set by layout.js (the handle between the two sides).
+     It is a share of the window, so the layout keeps its balance at any
+     zoom level. 44% until the user drags the handle. */
+  .shell {
+    grid-template-columns: var(--panel-width, 44%) minmax(0, 1fr);
+  }
+  .panel {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 30px 44px 0;
+    /* Scrolls with the mouse wheel or touchpad, without a scrollbar. */
+    scrollbar-width: none;
+  }
+  .panel::-webkit-scrollbar {
+    display: none;
+  }
+  /* Content stays in the middle of each side, however wide it gets. */
+  .panel > .brand,
+  .panel > .kitchen {
+    width: 100%;
+    max-width: 580px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .table {
+    padding: 56px 56px 72px;
+  }
+  .table > * {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* The handle between the two sides: drag it to make either side wider.
+   It looks like the door handle of the fridge. */
+.splitter {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .splitter {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: var(--panel-width, 44%);
+    z-index: 5;
+    display: block;
+    width: 18px;
+    margin-left: -9px;
+    cursor: col-resize;
+    touch-action: none;
+  }
+  .splitter::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 72px;
+    margin: -36px 0 0 -5px;
+    border: 2px solid var(--enamel);
+    border-radius: 999px;
+    background: var(--speckle);
+    box-shadow: 0 4px 12px rgba(5, 20, 12, 0.35);
+    transition: height 0.15s, margin 0.15s, background 0.15s;
+  }
+  .splitter:hover::after,
+  .splitter:focus-visible::after,
+  .splitter.dragging::after {
+    height: 96px;
+    margin-top: -48px;
+  }
+  .splitter:focus-visible {
+    outline: none;
+  }
+  .splitter:focus-visible::after {
+    border-color: var(--turmeric);
+  }
+  /* While dragging, nothing else reacts and text is not selected. */
+  body.resizing {
+    cursor: col-resize;
+    user-select: none;
+  }
+  body.resizing .panel,
+  body.resizing .table {
+    pointer-events: none;
+  }
+}
+
+/* ---------- Brand ----------------------------------------------------- */
+.brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--enamel);
+  color: var(--rim);
+  font-size: 20px;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.brand-tagline {
+  margin-left: 4px;
+  color: rgba(246, 247, 243, 0.78);
+  font-size: 14px;
+}
+
+/* "My fridge" button in the header */
+.fridge-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 11px;
+  border: 1.5px solid rgba(246, 247, 243, 0.55);
+  border-radius: 999px;
+  background: rgba(20, 45, 33, 0.35);
+  color: var(--enamel);
+  font-size: 14.5px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.fridge-btn:hover {
+  border-color: var(--enamel);
+  background: rgba(20, 45, 33, 0.6);
+}
+
+.fridge-btn-icon {
+  font-size: 18px;
+}
+
+.saved-count {
+  font-size: 13px;
+  font-weight: 800;
+  opacity: 0.85;
+}
+
+/* The two header buttons stay together and move to their own line
+   when there is not enough room next to the name. */
+.brand-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  padding-top: 4px;
+}
+
+.fridge-badge {
+  display: grid;
+  place-items: center;
+  min-width: 21px;
+  height: 21px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--turmeric);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.fridge-badge.urgent {
+  background: var(--chili);
+  color: var(--white);
+}
+
+/* Small text button inside the notepad */
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 2px;
+  border: 0;
+  background: none;
+  color: var(--rim);
+  font-size: 14px;
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.link-btn:hover {
+  text-decoration-style: solid;
+}
+
+.link-btn svg {
+  font-size: 16px;
+}
+
+/* ---------- Kitchen question + counter (the form) ---------------------- */
+.kitchen {
+  margin: 0;
+}
+
+.kitchen-question {
+  display: block;
+  max-width: 14.5ch;
+  margin: 30px 0 22px;
+  font-family: var(--font-display);
+  font-size: clamp(40px, 11vw, 60px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  font-variation-settings: "opsz" 144;
+  color: var(--enamel);
+  text-shadow: 0 2px 0 rgba(20, 45, 33, 0.35);
+}
+
+/* ---------- The notepad (the form) -----------------------------------
+   A kitchen notepad: spiral rings on top, ruled paper with a red margin,
+   a tick list, and a torn bottom edge. */
+.notepad {
+  --paper: #fffefa;
+  --rule: #d5e0d8;
+  --pad: 20px;
+  position: relative;
+  padding: 40px var(--pad) 34px;
+  border-radius: 0;
+  /* Paper starts 12px down so the spiral wire can stick out above it. */
+  background: linear-gradient(var(--paper), var(--paper)) 0 12px / 100% 100% no-repeat;
+  color: var(--ink);
+  /* torn bottom edge */
+  -webkit-mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 9px) no-repeat,
+    conic-gradient(from 135deg at 50% 0, #000 90deg, #0000 0) bottom / 14px 9px repeat-x;
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 9px) no-repeat,
+    conic-gradient(from 135deg at 50% 0, #000 90deg, #0000 0) bottom / 14px 9px repeat-x;
+}
+
+@media (min-width: 960px) {
+  .notepad {
+    --pad: 28px;
+  }
+}
+
+/* The mask above would cut off a shadow, so the shadow sits on a wrapper. */
+.notepad-wrap {
+  filter: drop-shadow(0 18px 18px rgba(5, 20, 12, 0.35));
+}
+
+/* Spiral binding: punched holes in the paper with wire loops through them. */
+.note-rings {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  right: 8px;
+  height: 30px;
+  background:
+    radial-gradient(ellipse 4.5px 12px at 50% 14px, transparent 2.6px, #7d8a83 3px 4.2px, transparent 4.6px) 0 0 / 24px 30px repeat-x,
+    radial-gradient(circle at 50% 21px, #1f3d2f 0 4px, transparent 4.5px) 0 0 / 24px 30px repeat-x;
+}
+
+/* Where the ingredients are written: a plain box with a dashed edge,
+   the same "fill in here" line used for the country and the budget. */
+.note-paper {
+  position: relative;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 118px;
+  max-height: 260px;
+  resize: vertical;
+  margin: 0;
+  padding: 14px 16px;
+  border: 2px dashed #a9bdb1;
+  border-radius: 12px;
+  background: #f7f8f3;
+  font-size: 18px;
+  line-height: 1.5;
+  caret-color: var(--chili);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+textarea:hover {
+  border-color: var(--rim);
+}
+
+textarea:focus-visible {
+  border-style: solid;
+  border-color: var(--rim);
+  background: var(--white);
+}
+
+textarea::placeholder,
+input::placeholder {
+  color: #8f9b94;
+}
+
+.note-paper-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.char-count {
+  margin-left: auto;
+  padding: 0 2px;
+  text-align: right;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.char-count.near-limit {
+  color: var(--chili);
+  font-weight: 600;
+}
+
+/* "I cook in Australia" — a sentence with a fill-in blank */
+.note-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-top: 14px;
+  font-size: 17px;
+}
+
+.note-label {
+  font-weight: 600;
+}
+
+.inline-select {
+  position: relative;
+  display: inline-block;
+}
+
+.inline-select::after {
+  content: "";
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin-top: -6px;
+  border-right: 2px solid var(--rim);
+  border-bottom: 2px solid var(--rim);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+select {
+  appearance: none;
+  width: auto;
+  max-width: 100%;
+  padding: 0 24px 2px 2px;
+  border: 0;
+  border-bottom: 2px dashed var(--rim);
+  border-radius: 0;
+  background: transparent;
+  color: var(--rim);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+select.is-empty {
+  color: #8f9b94;
+  font-weight: 500;
+}
+
+select option {
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+}
+
+select:focus-visible {
+  outline: none;
+  border-bottom-style: solid;
+  background: var(--turmeric-soft);
+}
+
+.note-hint {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.note-hint.invalid {
+  color: var(--chili);
+  font-weight: 600;
+}
+
+/* Today's situation: a tick list */
+.note-list {
+  min-width: 0;
+  margin: 22px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.note-heading {
+  padding: 0;
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.mode-chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  column-gap: 18px;
+}
+
+.mode-chip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 15.5px;
+  font-weight: 500;
+  line-height: 1.25;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mode-chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tick {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--rim);
+  border-radius: 6px;
+  background: var(--paper);
+  transition: background 0.15s;
+}
+
+.chip-icon {
+  flex: none;
+  color: var(--rim);
+  font-size: 17px;
+}
+
+.mode-chip:hover .tick {
+  background: var(--celadon);
+}
+
+/* Situations are pick-one: round marks. The budget below is a tick box. */
+.mode-chip .tick {
+  border-radius: 50%;
+}
+
+.mode-chip:has(input:checked) .tick {
+  background: radial-gradient(circle, var(--white) 0 3.5px, var(--rim) 4px);
+}
+
+/* The chosen situation gets a highlighter stroke. */
+.mode-chip:has(input:checked) > span:last-child {
+  font-weight: 700;
+  background: linear-gradient(transparent 55%, rgba(225, 162, 58, 0.45) 55% 92%, transparent 92%);
+}
+
+.mode-chip:has(input:focus-visible) .tick {
+  outline: 3px solid var(--turmeric);
+  outline-offset: 2px;
+}
+
+/* "Keep it within my budget": a tick box; the amount appears when ticked. */
+.budget-block {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--turmeric-soft);
+}
+
+.budget-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.budget-toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.budget-toggle .tick {
+  background: var(--white);
+}
+
+.budget-toggle:has(input:checked) .tick {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / 100% no-repeat,
+    var(--rim);
+}
+
+.budget-toggle:has(input:focus-visible) .tick {
+  outline: 3px solid var(--turmeric);
+  outline-offset: 2px;
+}
+
+.budget-block .note-row {
+  margin-top: 10px;
+  padding-left: 30px;
+}
+
+.budget-block .note-hint {
+  padding-left: 30px;
+}
+
+/* Budget amount: another fill-in blank */
+.budget-input {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  border-bottom: 2px dashed var(--rim);
+}
+
+.budget-input:focus-within {
+  border-bottom-style: solid;
+  background: var(--white);
+}
+
+.budget-input.invalid {
+  border-bottom-color: var(--chili);
+}
+
+.budget-currency {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--rim);
+}
+
+.budget-input input {
+  width: 8.5ch;
+  padding: 0 2px 2px;
+  border: 0;
+  background: transparent;
+  color: var(--rim);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+
+/* The one loud button */
+.btn-cook {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 56px;
+  margin-top: 26px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--chili);
+  color: var(--white);
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.2);
+  transition: background 0.15s, transform 0.1s;
+}
+
+.btn-cook:hover {
+  background: var(--chili-dark);
+}
+
+.btn-cook:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-cook:disabled {
+  background: var(--chili-dark);
+  cursor: progress;
+}
+
+.btn-icon:empty {
+  display: none;
+}
+
+.spinner {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Full-colour tegel strip at the foot of the green wall */
+.tegel-strip {
+  flex: none;
+  height: 68px;
+  margin: 28px -18px 0;
+  margin-top: auto;
+  background: var(--tegel-color) 0 0 / 40px 40px;
+  border-top: 28px solid transparent;
+  background-clip: content-box;
+}
+
+@media (min-width: 960px) {
+  .tegel-strip {
+    height: 76px;
+    margin-left: -44px;
+    margin-right: -44px;
+    border-top-width: 36px;
+    background-size: 40px 40px;
+  }
+}
+
+/* ---------- The table (right side) ------------------------------------ */
+
+/* Idle: an empty plate with fork and spoon */
+.empty {
+  padding: 12px 0;
+  text-align: center;
+}
+
+.place-setting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.cutlery {
+  color: var(--rim);
+  font-size: 120px;
+  opacity: 0.85;
+}
+
+.cutlery svg {
+  width: 0.34em;
+  height: 1em;
+}
+
+.empty-plate {
+  width: 170px;
+  aspect-ratio: 1;
+  padding: 11px;
+  border-radius: 50%;
+  background: var(--speckle);
+  box-shadow: 0 18px 30px -20px rgba(27, 42, 35, 0.5);
+}
+
+.empty-plate-well {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow:
+    inset 0 0 0 16px var(--white),
+    inset 0 0 0 17.5px var(--celadon),
+    inset 0 6px 18px rgba(27, 42, 35, 0.06);
+}
+
+.empty-title {
+  margin: 26px 0 6px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.empty-body {
+  margin: 0 auto;
+  max-width: 34ch;
+  white-space: pre-line;
+  color: var(--ink-soft);
+}
+
+@media (min-width: 960px) {
+  .empty {
+    padding-top: 12vh;
+  }
+  .empty-plate {
+    width: 240px;
+    padding: 14px;
+  }
+  .cutlery {
+    font-size: 170px;
+  }
+}
+
+/* Loading: a pot on the flame */
+.loading {
+  padding: 16px 0;
+  text-align: center;
+}
+
+.pot {
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  color: var(--rim);
+  font-size: 120px;
+}
+
+.pot .steam {
+  animation: steam 1.8s ease-in-out infinite;
+}
+
+.pot .s2 {
+  animation-delay: 0.3s;
+}
+
+.pot .s3 {
+  animation-delay: 0.6s;
+}
+
+.pot .flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flicker 0.9s ease-in-out infinite alternate;
+}
+
+.pot .f2 {
+  animation-delay: 0.3s;
+}
+
+.pot .f3 {
+  animation-delay: 0.6s;
+}
+
+.loading-message {
+  margin: 14px 0 4px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.loading-message.swap {
+  animation: fade-swap 0.4s ease-out;
+}
+
+.loading-sub {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+@media (min-width: 960px) {
+  .loading {
+    padding-top: 12vh;
+  }
+}
+
+/* Error */
+.notice {
+  padding: 22px 24px 24px;
+  border-left: 5px solid var(--chili);
+  border-radius: 4px 16px 16px 4px;
+  background: var(--white);
+  box-shadow: 0 16px 30px -24px rgba(27, 42, 35, 0.5);
+}
+
+.notice-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.notice-icon {
+  color: var(--chili);
+  font-size: 24px;
+}
+
+.notice-message {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.btn-line {
+  margin-top: 18px;
+  padding: 10px 20px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-line:hover {
+  background: var(--ink);
+  color: var(--white);
+}
+
+@media (min-width: 960px) {
+  .notice {
+    margin-top: 12vh;
+  }
+}
+
+/* ---------- Results: recipes served on plates -------------------------- */
+.results-title {
+  margin: 0 0 22px;
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  outline: none;
+  scroll-margin-top: 16px;
+}
+
+.plate {
+  margin-bottom: 30px;
+  padding: 11px;
+  border-radius: 32px;
+  background: var(--speckle);
+  box-shadow: 0 24px 40px -28px rgba(27, 42, 35, 0.6);
+  animation: serve 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+.plate-inner {
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--white);
+}
+
+.plate-head {
+  padding: 24px 24px 20px;
+  background: var(--celadon);
+}
+
+/* Show / hide the ingredients and steps */
+.plate-toggle {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: var(--rim);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 5px;
+  cursor: pointer;
+}
+
+.plate-toggle::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin: 0 0 3px 9px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.2s;
+}
+
+.plate-toggle[aria-expanded="true"]::after {
+  margin-bottom: -1px;
+  transform: rotate(-135deg);
+}
+
+.plate-toggle:hover {
+  text-decoration-style: solid;
+}
+
+.plate-section {
+  padding: 20px 24px 22px;
+}
+
+.plate-section + .plate-section {
+  border-top: 1.5px dashed var(--line);
+}
+
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* The heart: outline when not saved, filled chili red when saved */
+.heart {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: -6px -8px 0 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--rim);
+  font-size: 26px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.heart:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.heart[aria-pressed="true"] {
+  color: var(--chili);
+}
+
+.heart[aria-pressed="true"] svg {
+  fill: currentColor;
+}
+
+.heart.pop svg {
+  animation: pop 0.35s ease-out;
+}
+
+.recipe-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 96;
+}
+
+.recipe-desc {
+  margin: 8px 0 0;
+  max-width: 52ch;
+  color: var(--ink-soft);
+  font-size: 16.5px;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin-top: 16px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.meta-icon {
+  color: var(--rim);
+  font-size: 18px;
+}
+
+/* Price tag: a little label tied to the plate */
+.price-tag {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 7px 14px 7px 22px;
+  border-radius: 6px 12px 12px 6px;
+  background: var(--turmeric);
+  color: var(--ink);
+  line-height: 1.15;
+  transform: rotate(-2deg);
+}
+
+.price-tag::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: var(--celadon);
+}
+
+.price-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.price-value {
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.section-label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+}
+
+/* Ingredients: tick them off while cooking */
+.ingredients {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  columns: 2 15rem;
+  column-gap: 24px;
+}
+
+.ingredients li {
+  break-inside: avoid;
+}
+
+.ingredient-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ingredient-row .ingredient {
+  flex: 1;
+}
+
+/* "swap": small and quiet until you need it */
+.swap-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  margin-top: 4px;
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: #7a8a81;
+  font-size: 12.5px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.swap-btn svg {
+  font-size: 14px;
+}
+
+.swap-btn:hover,
+.swap-btn[aria-expanded="true"] {
+  background: var(--turmeric-soft);
+  color: #8a5a0c;
+}
+
+/* The answer: a strip of paper tape stuck under the ingredient */
+.swap-note {
+  margin: 4px 0 10px 30px;
+  padding: 10px 16px 11px;
+  background: #efe4c6;
+  transform: rotate(-0.6deg);
+  -webkit-mask:
+    conic-gradient(from -135deg at right, #0000, #000 1deg 89deg, #0000 90deg) right / 5px 9px repeat-y,
+    conic-gradient(from 45deg at left, #0000, #000 1deg 89deg, #0000 90deg) left / 5px 9px repeat-y,
+    linear-gradient(#000 0 0) center / calc(100% - 9px) 100% no-repeat;
+  mask:
+    conic-gradient(from -135deg at right, #0000, #000 1deg 89deg, #0000 90deg) right / 5px 9px repeat-y,
+    conic-gradient(from 45deg at left, #0000, #000 1deg 89deg, #0000 90deg) left / 5px 9px repeat-y,
+    linear-gradient(#000 0 0) center / calc(100% - 9px) 100% no-repeat;
+}
+
+.swap-note[hidden] {
+  display: none;
+}
+
+.swap-loading,
+.swap-lead,
+.swap-tip,
+.swap-error {
+  margin: 0;
+  font-size: 13.5px;
+}
+
+.swap-loading {
+  color: var(--ink-soft);
+}
+
+.swap-lead {
+  font-weight: 700;
+}
+
+.swap-error {
+  color: var(--chili);
+  font-weight: 600;
+}
+
+.swap-list {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.swap-list li {
+  display: flex;
+  flex-direction: column;
+  padding: 3px 0;
+}
+
+.swap-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.swap-fridge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px 1px 6px;
+  border-radius: 999px;
+  background: var(--rim);
+  color: var(--white);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.swap-how {
+  font-size: 13.5px;
+  color: #5d5440;
+}
+
+.swap-tip {
+  margin-top: 6px;
+  color: #5d5440;
+  font-style: italic;
+}
+
+.ingredient {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 5px 0;
+  font-size: 15.5px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.ingredient input {
+  flex: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 1.5px solid var(--rim);
+  border-radius: 6px;
+  background: var(--white);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ingredient input:checked {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / 100% no-repeat,
+    var(--rim);
+}
+
+.ingredient input:checked + span {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  text-decoration-color: var(--turmeric);
+  text-decoration-thickness: 2px;
+}
+
+/* Steps */
+.steps-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 12px;
+}
+
+.steps {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  margin: 0 -10px;
+  padding: 9px 10px;
+  border-radius: 14px;
+  font-size: 16px;
+  line-height: 1.55;
+  transition: background 0.25s;
+}
+
+.step-number {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--celadon);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 650;
+  color: var(--rim);
+  font-variant-numeric: lining-nums;
+}
+
+.step-text {
+  padding-top: 4px;
+}
+
+.step.reading {
+  background: var(--turmeric-soft);
+}
+
+.step.reading .step-number {
+  background: var(--chili);
+  color: var(--white);
+}
+
+/* Read-aloud controls: one button when idle, Pause/Stop while reading. */
+.speech-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 15px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--rim);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-read:hover {
+  background: var(--rim-dark);
+}
+
+.btn-read svg {
+  font-size: 15px;
+}
+
+.speech-controls .icon-btn {
+  display: none;
+}
+
+.speech-controls:not([data-state="idle"]) .icon-btn {
+  display: inline-flex;
+}
+
+.speech-controls:not([data-state="idle"]) > .btn-read:first-child {
+  display: none;
+}
+
+/* Saved recipes page */
+.saved-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 22px;
+}
+
+.saved-head .results-title {
+  margin: 0;
+}
+
+.btn-back {
+  margin-top: 0;
+  padding: 7px 16px;
+  font-size: 14px;
+}
+
+.saved-empty {
+  padding: 40px 0;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.powered-by {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* ---------- My fridge (dialog) ----------------------------------------
+   A fridge door that swings open: the top compartment is where you add
+   food, below it the inside of the fridge with glass shelves. Food is a
+   strip of paper tape with its name written on it. */
+.fridge {
+  width: min(470px, 100vw);
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  overflow: visible;
+}
+
+.fridge::backdrop {
+  background: rgba(20, 40, 30, 0.55);
+}
+
+.fridge[open] {
+  animation: door-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.fridge-door {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  padding: 24px 22px 18px 34px;
+  border-radius: 28px 0 0 28px;
+  background: var(--white);
+  box-shadow: -20px 0 40px -20px rgba(0, 0, 0, 0.4);
+}
+
+/* The door handle */
+.fridge-door::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 28px;
+  width: 7px;
+  height: 120px;
+  border-radius: 999px;
+  background: var(--speckle);
+}
+
+.fridge-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.fridge-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.fridge-summary {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 14.5px;
+}
+
+.fridge-close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--celadon);
+  color: var(--ink);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.fridge-close:hover {
+  background: #d3e2d8;
+}
+
+/* Adding food */
+.fridge-add {
+  margin-top: 18px;
+}
+
+.fridge-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.item-name {
+  width: 100%;
+  padding: 11px 14px;
+  border: 2px dashed #a9bdb1;
+  border-radius: 12px;
+  background: #f7f8f3;
+  font-size: 17px;
+  outline: none;
+}
+
+.item-name:focus-visible {
+  border-style: solid;
+  border-color: var(--rim);
+  background: var(--white);
+}
+
+/* "Keeps for − 3 days + until Thu 27 Nov" */
+.keeps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-top: 14px;
+}
+
+.keeps-label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.step-btn {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--rim);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--rim);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.step-btn:hover:not(:disabled) {
+  background: var(--celadon);
+}
+
+.step-btn:disabled {
+  border-color: var(--line);
+  color: var(--line);
+  cursor: default;
+}
+
+.keeps-days {
+  min-width: 5.6em;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--rim);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.keeps-date {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.fridge-hint {
+  min-height: 1.4em;
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.fridge-hint.invalid {
+  color: var(--chili);
+  font-weight: 600;
+}
+
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--rim);
+  color: var(--white);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-add:hover {
+  background: var(--rim-dark);
+}
+
+/* Inside the fridge */
+.fridge-inside {
+  flex: 1;
+  margin: 20px -6px 0 -12px;
+  padding: 6px 14px 18px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #e9f1ec, #f3f7f4 60%);
+  box-shadow: inset 0 2px 10px rgba(27, 42, 35, 0.1);
+}
+
+.shelf {
+  padding-top: 14px;
+}
+
+.shelf-title {
+  margin: 0 0 4px 2px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.shelf[data-level="today"] .shelf-title,
+.shelf[data-level="past"] .shelf-title {
+  color: var(--chili);
+}
+
+.shelf[data-level="soon"] .shelf-title {
+  color: #9a6512;
+}
+
+.shelf-items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 12px;
+  margin: 0;
+  padding: 10px 4px 8px;
+  list-style: none;
+}
+
+/* The glass shelf the food stands on */
+.shelf-glass {
+  height: 9px;
+  border: 1px solid #c3d5c9;
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), #d4e3d9);
+  box-shadow: 0 7px 10px -7px rgba(27, 42, 35, 0.45);
+}
+
+.shelf-empty {
+  margin: 0;
+  padding: 18px 6px 14px;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* A strip of paper tape with the food's name written on it */
+.tape-wrap {
+  position: relative;
+  max-width: 100%;
+}
+
+.tilt-0 {
+  transform: rotate(-1.6deg);
+}
+.tilt-1 {
+  transform: rotate(1.1deg);
+}
+.tilt-2 {
+  transform: rotate(-0.6deg);
+}
+.tilt-3 {
+  transform: rotate(1.8deg);
+}
+
+.tape {
+  display: flex;
+  flex-direction: column;
+  padding: 9px 16px 8px;
+  background: #efe4c6;
+  box-shadow: inset 0 -2px 0 rgba(120, 95, 40, 0.08);
+  /* torn ends on the left and right */
+  -webkit-mask:
+    conic-gradient(from -135deg at right, #0000, #000 1deg 89deg, #0000 90deg) right / 5px 9px repeat-y,
+    conic-gradient(from 45deg at left, #0000, #000 1deg 89deg, #0000 90deg) left / 5px 9px repeat-y,
+    linear-gradient(#000 0 0) center / calc(100% - 9px) 100% no-repeat;
+  mask:
+    conic-gradient(from -135deg at right, #0000, #000 1deg 89deg, #0000 90deg) right / 5px 9px repeat-y,
+    conic-gradient(from 45deg at left, #0000, #000 1deg 89deg, #0000 90deg) left / 5px 9px repeat-y,
+    linear-gradient(#000 0 0) center / calc(100% - 9px) 100% no-repeat;
+}
+
+.tape-name {
+  overflow-wrap: anywhere;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.tape-status {
+  margin-top: 2px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--rim);
+}
+
+.tape-wrap[data-level="soon"] .tape-status {
+  color: #9a6512;
+}
+
+.tape-wrap[data-level="today"] .tape-status,
+.tape-wrap[data-level="past"] .tape-status {
+  color: var(--chili);
+}
+
+.tape-wrap[data-level="past"] .tape {
+  background: #e7dfcf;
+}
+
+.tape-wrap[data-level="past"] .tape-name {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  text-decoration-color: rgba(194, 57, 31, 0.6);
+}
+
+/* Take it out */
+.tape-remove {
+  position: absolute;
+  top: -9px;
+  right: -7px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--ink-soft);
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.tape-wrap:hover .tape-remove,
+.tape-remove:focus-visible {
+  opacity: 1;
+}
+
+.tape-remove:hover {
+  border-color: var(--chili);
+  color: var(--chili);
+}
+
+/* Touch screens have no hover: always show the button */
+@media (hover: none) {
+  .tape-remove {
+    opacity: 1;
+  }
+}
+
+.fridge-foot {
+  position: sticky;
+  bottom: -18px;
+  margin: 12px -22px -18px -34px;
+  padding: 14px 22px 18px 34px;
+  background: linear-gradient(transparent, var(--white) 18px);
+}
+
+.fridge-foot .btn-cook {
+  margin-top: 0;
+}
+
+.fridge-foot .btn-cook:disabled {
+  background: #d9c3bd;
+  cursor: not-allowed;
+}
+
+.fridge-note {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* Phones: the fridge slides up from the bottom */
+@media (max-width: 600px) {
+  .fridge {
+    width: 100vw;
+    height: auto;
+    max-height: 92dvh;
+    margin: auto 0 0;
+  }
+  .fridge[open] {
+    animation-name: sheet-up;
+  }
+  .fridge-door {
+    max-height: 92dvh;
+    padding: 22px 18px 18px;
+    border-radius: 26px 26px 0 0;
+    box-shadow: 0 -20px 40px -20px rgba(0, 0, 0, 0.4);
+  }
+  .fridge-door::before {
+    left: 50%;
+    top: 8px;
+    width: 56px;
+    height: 6px;
+    margin-left: -28px;
+  }
+  .fridge-inside {
+    margin-left: -6px;
+  }
+  .fridge-foot {
+    margin: 12px -18px -18px;
+    padding: 14px 18px 18px;
+  }
+}
+
+.noscript {
+  max-width: 640px;
+  margin: 20px auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+/* ---------- Motion ---------------------------------------------------- */
+@keyframes serve {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes flicker {
+  from {
+    transform: scale(0.94, 0.9);
+  }
+  to {
+    transform: scale(1.04, 1.06);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes door-in {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(60px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes fade-swap {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .pot .steam {
+    opacity: 1;
+  }
+}
+
+/* ---------- Small phones ---------------------------------------------- */
+@media (max-width: 380px) {
+  .panel {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .tegel-strip {
+    margin-left: -14px;
+    margin-right: -14px;
+  }
+  .table {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .plate-head,
+  .plate-section {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .recipe-title {
+    font-size: 27px;
+  }
+  .cutlery {
+    display: none;
+  }
+}
