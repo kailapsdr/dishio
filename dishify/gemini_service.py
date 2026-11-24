@@ -81,7 +81,7 @@ class GeminiService:
             raise GeminiError(
                 "AI_UNAVAILABLE",
                 "Could not reach the AI service. Please check the internet "
-                "connection of the computer running Dishify and try again.",
+                "connection of the computer running Dishio and try again.",
             ) from None
         except ValueError:
             raise GeminiError("AI_BAD_RESPONSE", "The AI response could not be read.") from None

@@ -1,11 +1,11 @@
-// Dishify service worker.
+// Dishio service worker.
 // Keeps a copy of the app's own files so it opens fast and can be installed.
 // Recipes always come fresh from the server (they need the internet anyway).
 //
 // Files are fetched "network first", so changes show up on the next visit.
 // Raising the number in CACHE_NAME clears old saved copies.
 
-const CACHE_NAME = "dishify-v15";
+const CACHE_NAME = "dishio-v16";
 
 const APP_FILES = [
   "/",

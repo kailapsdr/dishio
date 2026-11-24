@@ -1,10 +1,10 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-title Dishify
+title Dishio
 
 rem ------------------------------------------------------------------
-rem  Klik dua kali file ini untuk menjalankan Dishify.
+rem  Klik dua kali file ini untuk menjalankan Dishio.
 rem  Pertama kali: membuat folder .venv dan memasang paket Python
 rem  Flask, python-dotenv, pytest. Berikutnya langsung jalan.
 rem  Catatan: jangan pakai tanda kurung di teks echo file ini.
@@ -38,7 +38,7 @@ echo.
 echo  File .env baru dibuat. Notepad akan terbuka.
 echo  Tempel key Gemini kamu tepat setelah GEMINI_API_KEY=
 echo  lalu simpan dengan Ctrl+S dan tutup Notepad.
-echo  Dishify akan menyala setelah Notepad ditutup.
+echo  Dishio akan menyala setelah Notepad ditutup.
 echo.
 start "" /wait notepad.exe ".env"
 

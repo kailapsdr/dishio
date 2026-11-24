@@ -13,7 +13,7 @@ STATIC = Path(__file__).resolve().parent.parent / "static"
 def test_home_page_is_served(client):
     res = client.get("/")
     assert res.status_code == 200
-    assert b"Dishify" in res.data
+    assert b"Dishio" in res.data
     assert b'rel="manifest"' in res.data
 
 

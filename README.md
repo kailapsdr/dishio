@@ -1,6 +1,8 @@
-# Dishify (versi web / PWA)
+# Dishio (versi web / PWA)
 
-Dishify membantu kamu memutuskan mau masak apa. Ketik bahan yang sudah ada di dapur atau bahan yang sedang ingin kamu makan, lalu AI Gemini membuatkan 5 resep sederhana yang berbeda-beda. Aplikasi ini bisa dibuka di browser dan bisa **diinstal** seperti aplikasi biasa (PWA).
+Dulu namanya Dishify. Nama folder (`dishify-pwa`) dan repo GitHub (`dishify`) sengaja tidak diubah supaya tidak ada yang rusak.
+
+Dishio membantu kamu memutuskan mau masak apa. Ketik bahan yang sudah ada di dapur atau bahan yang sedang ingin kamu makan, lalu AI Gemini membuatkan 5 resep sederhana yang berbeda-beda. Aplikasi ini bisa dibuka di browser dan bisa **diinstal** seperti aplikasi biasa (PWA).
 
 Fitur:
 
@@ -10,7 +12,7 @@ Fitur:
 - **Keep it within my budget**: centang kalau ingin membatasi biaya, lalu isi batas maksimal per masakan dalam mata uang negaramu (misalnya IDR 25.000 atau USD 7.50). Bisa digabung dengan situasi mana pun. Tanpa budget, bahan yang kamu ketik dianggap sudah ada di dapur. Dengan budget, bahan itu dianggap yang ingin kamu masak (misalnya "ayam"), dan biaya membelinya ikut dihitung.
 - **swap**: di setiap bahan pada resep ada tautan kecil *swap*. Klik kalau kamu tidak punya bahan itu, lalu Gemini menyarankan sampai 3 pengganti, dengan bahan dari kulkasmu didahulukan (bertanda *in your fridge*).
 - **Resep favorit**: klik ikon hati di sebelah judul resep untuk menyimpannya. Semua resep tersimpan bisa dibuka lewat tombol **Saved** di bagian atas, bahkan tanpa internet. Resep tersimpan ada di browser masing-masing perangkat.
-- **My fridge**: catat bahan di kulkasmu dan berapa lama bahan itu tahan (tombol − dan +). Nama bahan boleh dalam bahasa apa pun. Untuk bahan umum dalam bahasa Inggris/Indonesia, perkiraannya langsung muncul. Untuk bahasa atau bahan lain, Dishify menanyakannya ke Gemini. Bahan ditempel sebagai label di rak: *Past its date*, *Use today*, *Use in the next 2 days*, dan *Still fresh*. Tombol *Cook with these* mengisi kolom bahan dari isi kulkas, mulai dari yang paling cepat basi, dan Gemini diminta memakai bahan itu lebih dulu. Data kulkas tersimpan di browser masing-masing perangkat.
+- **My fridge**: catat bahan di kulkasmu dan berapa lama bahan itu tahan (tombol − dan +). Nama bahan boleh dalam bahasa apa pun. Untuk bahan umum dalam bahasa Inggris/Indonesia, perkiraannya langsung muncul. Untuk bahasa atau bahan lain, Dishio menanyakannya ke Gemini. Bahan ditempel sebagai label di rak: *Past its date*, *Use today*, *Use in the next 2 days*, dan *Still fresh*. Tombol *Cook with these* mengisi kolom bahan dari isi kulkas, mulai dari yang paling cepat basi, dan Gemini diminta memakai bahan itu lebih dulu. Data kulkas tersimpan di browser masing-masing perangkat.
 - **Read the steps**: langkah memasak dibacakan dengan suara, lengkap dengan tombol *Pause*, *Resume*, dan *Stop*.
 - **Lebar bisa diatur** (di laptop): tarik pegangan hijau di garis antara sisi kiri dan kanan. Klik dua kali pegangannya untuk kembali ke lebar awal. Tampilan tetap seimbang dan berada di tengah saat halaman di-zoom in atau zoom out.
 - Bisa diinstal ke layar utama laptop (dan HP, lihat catatan di bawah).
@@ -37,7 +39,7 @@ Fitur:
 
 > Key lama yang tertulis di aplikasi Flutter (`main.dart`) sebaiknya **dihapus** di halaman yang sama, karena key itu pernah tertulis langsung di dalam kode.
 
-### Langkah 3: Jalankan Dishify
+### Langkah 3: Jalankan Dishio
 
 **Cara paling mudah:** buka folder `dishify-pwa`, lalu **klik dua kali `start.bat`**.
 
@@ -47,7 +49,7 @@ Fitur:
   GEMINI_API_KEY=key-kamu-di-sini
   ```
   Simpan dengan **Ctrl+S**, lalu tutup Notepad.
-- Akan muncul jendela hitam bertuliskan *Dishify is running*. **Biarkan jendela itu terbuka.**
+- Akan muncul jendela hitam bertuliskan *Dishio is running*. **Biarkan jendela itu terbuka.**
 - Buka **Chrome** atau **Edge**, lalu ketik alamat: **http://localhost:5000**
 
 Untuk menjalankannya lagi lain waktu, cukup klik dua kali `start.bat`.
@@ -65,7 +67,7 @@ copy .env.example .env
 notepad .env
 .venv\Scripts\python app.py
 ```
-Baris 2 sampai 5 cukup dijalankan sekali. Setelah itu, untuk menyalakan Dishify cukup jalankan baris pertama dan terakhir.
+Baris 2 sampai 5 cukup dijalankan sekali. Setelah itu, untuk menyalakan Dishio cukup jalankan baris pertama dan terakhir.
 </details>
 
 ### Langkah 4: Instal sebagai aplikasi (PWA)
@@ -75,7 +77,7 @@ Buka http://localhost:5000 di Chrome atau Edge, lalu:
 - **Chrome**: klik ikon **Instal** (layar dengan panah ke bawah) di ujung kanan kolom alamat, lalu pilih *Install*.
 - **Edge**: klik menu **...**, lalu pilih *Apps*, lalu *Install this site as an app*.
 
-Dishify akan muncul di Start Menu dan desktop seperti aplikasi biasa. **Catatan:** server (jendela hitam dari `start.bat`) tetap harus menyala, karena resep dibuat oleh server.
+Dishio akan muncul di Start Menu dan desktop seperti aplikasi biasa. **Catatan:** server (jendela hitam dari `start.bat`) tetap harus menyala, karena resep dibuat oleh server.
 
 ---
 
@@ -96,13 +98,13 @@ Hal yang perlu diketahui:
 - **Tidak ada "tidur".** Situs langsung terbuka kapan pun.
 - **Update otomatis.** Setiap kali kamu push perubahan lewat GitHub Desktop, Netlify memasang versi barunya sendiri.
 - **Kalau mengganti key**, ubah nilainya di **Project configuration → Environment variables**, lalu buka **Deploys → Trigger deploy → Deploy project** supaya key baru dipakai.
-- **Alamatnya publik.** Siapa pun yang tahu alamatnya bisa memakai Dishify, dan pemakaiannya memakai kuota Gemini-mu. Batas per pengunjung tetap berlaku, tapi di Netlify hitungannya bisa ter-reset sewaktu-waktu, jadi batas ini lebih longgar daripada di laptop.
+- **Alamatnya publik.** Siapa pun yang tahu alamatnya bisa memakai Dishio, dan pemakaiannya memakai kuota Gemini-mu. Batas per pengunjung tetap berlaku, tapi di Netlify hitungannya bisa ter-reset sewaktu-waktu, jadi batas ini lebih longgar daripada di laptop.
 - **Paket gratis Netlify** memberi 300 kredit per bulan. Untuk pemakaian pribadi ini lebih dari cukup.
 
 ## Membuka dari HP
 
 - **Memakai saja (tanpa instal)**: laptop dan HP harus tersambung ke Wi-Fi yang sama.
-  1. Di file `.env`, ubah `HOST=127.0.0.1` menjadi `HOST=0.0.0.0`, lalu jalankan ulang Dishify. Kalau Windows bertanya soal firewall, izinkan untuk jaringan *Private*.
+  1. Di file `.env`, ubah `HOST=127.0.0.1` menjadi `HOST=0.0.0.0`, lalu jalankan ulang Dishio. Kalau Windows bertanya soal firewall, izinkan untuk jaringan *Private*.
   2. Cari alamat IP laptop: di Command Prompt ketik `ipconfig`, lalu lihat baris **IPv4 Address** (misalnya `192.168.1.5`).
   3. Di HP, buka `http://192.168.1.5:5000`.
 - **Instal ke layar utama HP**: browser hanya mengizinkan instalasi dari alamat **https://**. Pakai alamat Netlify (lihat bagian di atas). Lewat alamat `http://192.168...`, aplikasi tetap bisa dipakai, tapi tidak bisa diinstal.
@@ -127,15 +129,15 @@ Tes untuk server Netlify butuh Node.js (tidak wajib dipasang): `node --test netl
 
 | Yang terlihat | Yang perlu dilakukan |
 |---|---|
-| Jendela hitam menulis `WARNING: This is a development server` | Normal. Abaikan saja, karena Dishify memang dipakai di laptop sendiri. |
+| Jendela hitam menulis `WARNING: This is a development server` | Normal. Abaikan saja, karena Dishio memang dipakai di laptop sendiri. |
 | `'py' is not recognized` atau "Python belum terpasang" | Pasang Python lagi dan centang **Add python.exe to PATH**. |
-| Di aplikasi muncul "Dishify isn't set up yet" | Key belum diisi. Buka `.env`, isi `GEMINI_API_KEY=`, simpan, lalu jalankan ulang `start.bat`. |
+| Di aplikasi muncul "Dishio isn't set up yet" | Key belum diisi. Buka `.env`, isi `GEMINI_API_KEY=`, simpan, lalu jalankan ulang `start.bat`. |
 | "The Gemini API key was rejected" | Key salah atau sudah dihapus. Buat key baru (Langkah 2). |
 | "The AI has reached its usage limit" | Kuota gratis Gemini habis untuk sementara. Coba lagi nanti. |
-| "You're going a bit fast…" | Batas permintaan Dishify tercapai. Tunggu sesuai detik yang tertulis. Batasnya bisa diubah di `.env`. |
-| Di versi online muncul "Dishify isn't set up yet" | `GEMINI_API_KEY` belum diisi di Netlify. Isi di **Environment variables**, lalu **Trigger deploy**. |
-| "Can't reach Dishify…" | Jendela hitam (server) tertutup. Jalankan `start.bat` lagi. |
-| Jendela hitam menulis `Address already in use` | Dishify sudah jalan di jendela lain, atau port 5000 dipakai aplikasi lain. Tutup jendela itu atau ganti `PORT=5001` di `.env`. |
+| "You're going a bit fast…" | Batas permintaan Dishio tercapai. Tunggu sesuai detik yang tertulis. Batasnya bisa diubah di `.env`. |
+| Di versi online muncul "Dishio isn't set up yet" | `GEMINI_API_KEY` belum diisi di Netlify. Isi di **Environment variables**, lalu **Trigger deploy**. |
+| "Can't reach Dishio…" | Jendela hitam (server) tertutup. Jalankan `start.bat` lagi. |
+| Jendela hitam menulis `Address already in use` | Dishio sudah jalan di jendela lain, atau port 5000 dipakai aplikasi lain. Tutup jendela itu atau ganti `PORT=5001` di `.env`. |
 | Pemasangan paket gagal di tengah jalan | Hapus folder `.venv`, pastikan internet menyala, lalu jalankan `start.bat` lagi. |
 | Tombol *Read the steps* tidak muncul | Browser tidak mendukung suara. Pakai Chrome atau Edge terbaru. |
 

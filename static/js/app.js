@@ -1,4 +1,4 @@
-// Dishify — main screen logic.
+// Dishio — main screen logic.
 // One screen, four states: idle → loading → success | error.
 
 import { ApiError, askSubstitute, generateRecipes, getOptions } from "./api.js";

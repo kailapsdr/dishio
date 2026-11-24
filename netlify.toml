@@ -1,4 +1,4 @@
-# Settings for hosting Dishify on Netlify (free, no credit card).
+# Settings for hosting Dishio on Netlify (free, no credit card).
 #
 # - The web app is the "static" folder, served as it is (no build step).
 # - The server part (/api/...) is netlify/functions/api.mjs.
@@ -7,7 +7,7 @@
 
 [build]
   publish = "static"
-  command = "echo Dishify needs no build step"
+  command = "echo Dishio needs no build step"
 
 [functions]
   directory = "netlify/functions"

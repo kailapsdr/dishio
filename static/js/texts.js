@@ -1,13 +1,13 @@
 // ============================================================================
 //  ALL TEXT SHOWN IN THE APP LIVES HERE.
-//  To change wording or translate Dishify, edit only this file.
+//  To change wording or translate Dishio, edit only this file.
 //  Words in {curly braces} are filled in by the app (for example {seconds}).
 //  (The app name in manifest.webmanifest and the <title> in index.html are the
 //  only other places with visible text.)
 // ============================================================================
 
 export const TEXT = {
-  appName: "Dishify",
+  appName: "Dishio",
   tagline: "Cook what you have or what you crave",
 
   resizeHandle: "Drag to resize the two sides",
@@ -58,7 +58,7 @@ export const TEXT = {
 
   // --- Idle state ---------------------------------------------------------
   emptyTitle: "Tell me what you have",
-  emptyBody: "Write what's in your kitchen or what you feel like eating.\nDishify will suggest recipes to match.",
+  emptyBody: "Write what's in your kitchen or what you feel like eating.\nDishio will suggest recipes to match.",
 
   // --- Loading state (messages change every 1.5 seconds) ------------------
   loadingMessages: [
@@ -68,7 +68,7 @@ export const TEXT = {
     "Seasoning to taste…",
     "Plating your dishes…",
   ],
-  loadingSubtitle: "Dishify is creating your recipes",
+  loadingSubtitle: "Dishio is creating your recipes",
 
   // --- Results ------------------------------------------------------------
   resultsTitleMany: "Here are {count} ideas for you",
@@ -104,7 +104,7 @@ export const TEXT = {
   fridgeSummaryNone: "Nothing in here yet.",
   fridgeSummaryAllFresh: "{count} items, all still fresh.",
   fridgeSummaryAttention: "{count} items. {attention} need your attention first.",
-  fridgeEmpty: "Add what you buy, and Dishify will tell you what to cook before it goes off.",
+  fridgeEmpty: "Add what you buy, and Dishio will tell you what to cook before it goes off.",
   addItemLabel: "Add food",
   itemPlaceholder: "e.g. Chicken thighs",
   itemNameRequired: "Type the food's name first.",
@@ -117,7 +117,7 @@ export const TEXT = {
   keepsUntil: "until {date}",
   keepsHint: "Usually keeps about {days} days. Change it if yours is different.",
   keepsChecking: "Checking how long {name} keeps…",
-  keepsHintAi: "Dishify estimates about {days} days. Change it if yours is different.",
+  keepsHintAi: "Dishio estimates about {days} days. Change it if yours is different.",
   keepsNotFood: "That doesn't look like food, but you can still add it.",
   keepsHintUnknown: "Set roughly how long it will keep.",
   addButton: "Add to fridge",
@@ -166,7 +166,7 @@ export const TEXT = {
     INVALID_BUDGET: "Please enter a budget greater than zero, using numbers only.",
     RATE_LIMITED: "You're going a bit fast. Please wait {seconds} seconds and try again.",
     NOT_CONFIGURED:
-      "Dishify isn't set up yet: the Gemini API key is missing. Add GEMINI_API_KEY to the .env file (on your computer) or to the Netlify environment variables (online).",
+      "Dishio isn't set up yet: the Gemini API key is missing. Add GEMINI_API_KEY to the .env file (on your computer) or to the Netlify environment variables (online).",
     AI_KEY_INVALID:
       "The Gemini API key was rejected. Check GEMINI_API_KEY in the .env file or in the Netlify environment variables.",
     AI_BUSY: "The AI has reached its usage limit for now. Please try again later.",
@@ -174,7 +174,7 @@ export const TEXT = {
     AI_UNAVAILABLE: "The AI service couldn't be reached. Please try again in a moment.",
     AI_BAD_RESPONSE: "The AI response could not be read. Please try again in a moment.",
     NO_RECIPES: "No recipes could be created from those ingredients. Try adding one or two more.",
-    NETWORK: "Can't reach Dishify. Check your internet connection and that the Dishify server is running.",
+    NETWORK: "Can't reach Dishio. Check your internet connection and that the Dishio server is running.",
     OFFLINE: "You're offline. Connect to the internet to get new recipes.",
     UNKNOWN: "Something unexpected happened. Please try again.",
   },

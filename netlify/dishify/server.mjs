@@ -1,4 +1,4 @@
-// The /api/... part of Dishify for Netlify. Same answers as app.py.
+// The /api/... part of Dishio for Netlify. Same answers as app.py.
 //
 // The Gemini key is read from Netlify's environment variables (set in the
 // Netlify dashboard, never in the code). It is only used here, on the
@@ -98,7 +98,7 @@ export function createServer(env, { fetchImpl = globalThis.fetch, clock } = {}) 
   const fromError = (err) => {
     if (err instanceof ValidationError) return errorResponse(err.code, err.message, 400, err.details);
     if (err instanceof GeminiError) return errorResponse(err.code, err.message, err.status);
-    console.error("Dishify server error:", err && err.name, err && err.message);
+    console.error("Dishio server error:", err && err.name, err && err.message);
     return errorResponse("SERVER_ERROR", "Something went wrong on the server.", 500);
   };
 

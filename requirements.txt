@@ -1,4 +1,4 @@
-# Paket Python yang dibutuhkan Dishify.
+# Paket Python yang dibutuhkan Dishio.
 Flask>=3.0,<4
 python-dotenv>=1.0,<2
 

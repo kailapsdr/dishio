@@ -2,6 +2,7 @@
 // Remembers the user's country, budget and what's in My fridge, each under
 // its own key, e.g. storage.get("pantry", []). New features can add keys.
 
+// Kept as "dishify:" (the app's old name) so saved recipes and fridge items stay.
 const PREFIX = "dishify:";
 
 // Clean up data from features that were removed.

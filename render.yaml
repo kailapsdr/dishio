@@ -1,4 +1,4 @@
-# How Render runs Dishify (read by Render when you pick "New > Blueprint").
+# How Render runs Dishio (read by Render when you pick "New > Blueprint").
 # The Gemini key is NOT written here: Render asks for it once, privately.
 services:
   - type: web

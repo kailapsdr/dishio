@@ -1,4 +1,4 @@
-// Talks to the Dishify server. The Gemini key is NOT here: only the server
+// Talks to the Dishio server. The Gemini key is NOT here: only the server
 // has it. The browser just sends ingredients and gets recipes back.
 
 export class ApiError extends Error {

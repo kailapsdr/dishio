@@ -1,4 +1,4 @@
-"""Dishify server.
+"""Dishio server.
 
 On your laptop:  python app.py   (then open http://localhost:5000)
 Online (Render): gunicorn "app:create_app()"   (see render.yaml)
@@ -102,7 +102,7 @@ def create_app(settings: Settings | None = None, gemini: GeminiService | None = 
     def not_configured():
         return error_response(
             "NOT_CONFIGURED",
-            "The Gemini API key is missing. Add it to the .env file and restart Dishify.",
+            "The Gemini API key is missing. Add it to the .env file and restart Dishio.",
             503,
         )
 
@@ -153,7 +153,7 @@ def create_app(settings: Settings | None = None, gemini: GeminiService | None = 
         if not settings.gemini_configured:
             return error_response(
                 "NOT_CONFIGURED",
-                "The Gemini API key is missing. Add it to the .env file and restart Dishify.",
+                "The Gemini API key is missing. Add it to the .env file and restart Dishio.",
                 503,
             )
 
@@ -281,12 +281,12 @@ if __name__ == "__main__":
     app = create_app(settings)
     shown_host = "localhost" if settings.host in ("127.0.0.1", "0.0.0.0") else settings.host
     print()
-    print("  Dishify is running.")
+    print("  Dishio is running.")
     print(f"  Open this address in Chrome or Edge:  http://{shown_host}:{settings.port}")
     if not settings.gemini_configured:
         print()
         print("  WARNING: GEMINI_API_KEY is empty. Open the .env file, paste your key,")
-        print("  then stop (Ctrl+C) and start Dishify again.")
-    print("  To stop Dishify, press Ctrl+C in this window.")
+        print("  then stop (Ctrl+C) and start Dishio again.")
+    print("  To stop Dishio, press Ctrl+C in this window.")
     print()
     app.run(host=settings.host, port=settings.port, debug=False)
