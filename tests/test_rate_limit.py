@@ -1,4 +1,4 @@
-from dishify.rate_limit import RateLimiter
+from dishio.rate_limit import RateLimiter
 
 
 class Clock:

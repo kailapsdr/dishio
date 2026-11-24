@@ -3,7 +3,7 @@
 from pathlib import Path
 
 from app import create_app
-from dishify.gemini_service import GeminiError
+from dishio.gemini_service import GeminiError
 
 from .conftest import FAKE_KEY, FakeGemini, make_settings
 

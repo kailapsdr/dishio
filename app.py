@@ -13,18 +13,18 @@ from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory
 
-from dishify.config import Settings, load_settings
-from dishify.countries import COUNTRIES, DEFAULT_COUNTRY
-from dishify.gemini_service import GeminiError, GeminiService
-from dishify.prompts import (
+from dishio.config import Settings, load_settings
+from dishio.countries import COUNTRIES, DEFAULT_COUNTRY
+from dishio.gemini_service import GeminiError, GeminiService
+from dishio.prompts import (
     DEFAULT_MODE,
     MODES,
     build_recipe_prompt,
     build_shelf_life_prompt,
     build_substitute_prompt,
 )
-from dishify.rate_limit import RateLimiter
-from dishify.validation import (
+from dishio.rate_limit import RateLimiter
+from dishio.validation import (
     ValidationError,
     validate_recipe_request,
     validate_shelf_life_request,
@@ -112,7 +112,7 @@ def create_app(settings: Settings | None = None, gemini: GeminiService | None = 
     app.config["MAX_CONTENT_LENGTH"] = 16 * 1024  # requests are tiny; refuse big ones
     app.config["JSON_SORT_KEYS"] = False
     app.json.sort_keys = False
-    app.extensions["dishify"] = {"settings": settings, "limiter": limiter}
+    app.extensions["dishio"] = {"settings": settings, "limiter": limiter}
 
     # -- Pages -------------------------------------------------------------
     @app.get("/")

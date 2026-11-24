@@ -1,6 +1,6 @@
 import pytest
 
-from dishify.validation import ValidationError, validate_recipe_request
+from dishio.validation import ValidationError, validate_recipe_request
 
 
 def code_of(payload, **kwargs):

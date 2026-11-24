@@ -1,7 +1,7 @@
 import pytest
 
-from dishify.countries import COUNTRIES
-from dishify.prompts import MODES, build_recipe_prompt
+from dishio.countries import COUNTRIES
+from dishio.prompts import MODES, build_recipe_prompt
 
 ID = COUNTRIES["ID"]
 US = COUNTRIES["US"]

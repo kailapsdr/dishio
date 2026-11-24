@@ -1,5 +1,5 @@
 // Talks to the Gemini API and turns its answer into clean data.
-// Same behaviour as dishify/gemini_service.py. The API key goes in a
+// Same behaviour as dishio/gemini_service.py. The API key goes in a
 // request header (never in the URL) and never leaves the server.
 
 const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent";

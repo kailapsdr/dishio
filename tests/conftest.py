@@ -3,11 +3,11 @@ from pathlib import Path
 
 import pytest
 
-# Let the tests import app.py and the dishify package from the project folder.
+# Let the tests import app.py and the dishio package from the project folder.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app import create_app  # noqa: E402
-from dishify.config import Settings  # noqa: E402
+from dishio.config import Settings  # noqa: E402
 
 FAKE_KEY = "test-key-1234567890-do-not-leak"
 

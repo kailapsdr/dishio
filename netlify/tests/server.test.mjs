@@ -4,7 +4,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { createServer } from "../dishify/server.mjs";
+import { createServer } from "../dishio/server.mjs";
 
 function geminiReply(text) {
   return new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text }] } }] }), { status: 200 });
@@ -20,7 +20,7 @@ function server(env = {}, fetchImpl = async () => geminiReply(RECIPES), clock) {
 
 function post(handle, path, body, ip = "1.1.1.1") {
   const init = { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) };
-  return handle(new Request(`https://dishify.test${path}`, init), { ip });
+  return handle(new Request(`https://dishio.test${path}`, init), { ip });
 }
 
 test("recipes come back cleaned", async () => {
@@ -42,7 +42,7 @@ test("recipes come back cleaned", async () => {
 test("the key never appears in any answer", async () => {
   const handle = server();
   for (const path of ["/api/options", "/api/health"]) {
-    const res = await handle(new Request(`https://dishify.test${path}`), {});
+    const res = await handle(new Request(`https://dishio.test${path}`), {});
     assert.ok(!(await res.text()).includes("test-key"));
   }
 });
@@ -120,8 +120,8 @@ test("big requests and unknown addresses", async () => {
   const handle = server();
   const big = await post(handle, "/api/recipes", { ingredients: "x".repeat(20_000) });
   assert.equal(big.status, 413);
-  const missing = await handle(new Request("https://dishify.test/api/nothing"), {});
+  const missing = await handle(new Request("https://dishio.test/api/nothing"), {});
   assert.equal(missing.status, 404);
-  const wrong = await handle(new Request("https://dishify.test/api/recipes"), {});
+  const wrong = await handle(new Request("https://dishio.test/api/recipes"), {});
   assert.equal(wrong.status, 405);
 });

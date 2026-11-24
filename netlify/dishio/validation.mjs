@@ -1,5 +1,5 @@
 // Checks what the browser sends before anything reaches Gemini.
-// Same rules as dishify/validation.py.
+// Same rules as dishio/validation.py.
 
 import { DEFAULT_COUNTRY, findCountry } from "./countries.mjs";
 import { DEFAULT_MODE, MODES } from "./prompts.mjs";

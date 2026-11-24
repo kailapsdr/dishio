@@ -1,6 +1,6 @@
 # Dishio (versi web / PWA)
 
-Dulu namanya Dishify. Nama folder (`dishify-pwa`) dan repo GitHub (`dishify`) sengaja tidak diubah supaya tidak ada yang rusak.
+Dulu namanya Dishify.
 
 Dishio membantu kamu memutuskan mau masak apa. Ketik bahan yang sudah ada di dapur atau bahan yang sedang ingin kamu makan, lalu AI Gemini membuatkan 5 resep sederhana yang berbeda-beda. Aplikasi ini bisa dibuka di browser dan bisa **diinstal** seperti aplikasi biasa (PWA).
 
@@ -41,7 +41,7 @@ Fitur:
 
 ### Langkah 3: Jalankan Dishio
 
-**Cara paling mudah:** buka folder `dishify-pwa`, lalu **klik dua kali `start.bat`**.
+**Cara paling mudah:** buka folder `dishio-pwa`, lalu **klik dua kali `start.bat`**.
 
 - Saat pertama kali dijalankan, file ini akan memasang paket yang dibutuhkan (perlu internet, sekitar 1 menit). Lalu Notepad terbuka berisi file `.env`.
 - Di Notepad, tempel key kamu tepat setelah `GEMINI_API_KEY=`, contohnya:
@@ -60,7 +60,7 @@ Untuk mematikan: klik jendela hitam tadi, tekan **Ctrl+C**, lalu tutup jendelany
 <summary>Cara manual lewat Command Prompt (kalau tidak mau memakai start.bat)</summary>
 
 ```
-cd C:\Users\LENOVO\tugas2\dishify-pwa
+cd C:\Users\LENOVO\tugas2\dishio-pwa
 py -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt
 copy .env.example .env
@@ -86,7 +86,7 @@ Dishio akan muncul di Start Menu dan desktop seperti aplikasi biasa. **Catatan:*
 Netlify gratis dan tidak meminta kartu kredit. Netlify tidak bisa menjalankan Python, jadi versi online memakai bagian server yang ditulis dalam JavaScript (folder `netlify/`). Isinya sama dengan server Python: prompt, cek input, batas permintaan, dan pesan error-nya sama. File `netlify.toml` berisi semua pengaturannya. Kamu tidak perlu menginstal apa pun, karena Netlify yang memprosesnya.
 
 1. Buka https://app.netlify.com, lalu masuk memakai **akun GitHub**-mu.
-2. Klik **Add new project → Import an existing project → GitHub**, lalu pilih repo **dishify**.
+2. Klik **Add new project → Import an existing project → GitHub**, lalu pilih repo **dishio**.
 3. Di halaman pengaturan, biarkan semua isian seperti yang terisi otomatis (Publish directory: `static`).
 4. Klik **Add environment variables**, lalu isi:
    - Key: `GEMINI_API_KEY`
@@ -116,7 +116,7 @@ Hal yang perlu diketahui:
 Tes memeriksa fitur inti: cek input, batas permintaan, isi prompt, pembacaan jawaban Gemini, dan memastikan key tidak pernah terkirim ke browser. Tes **tidak** memanggil Gemini sungguhan, jadi tidak memakai kuota dan tidak butuh key.
 
 ```
-cd C:\Users\LENOVO\tugas2\dishify-pwa
+cd C:\Users\LENOVO\tugas2\dishio-pwa
 .venv\Scripts\python -m pytest
 ```
 Kalau semuanya lulus, akan muncul tulisan seperti `95 passed`.
@@ -146,10 +146,10 @@ Tes untuk server Netlify butuh Node.js (tidak wajib dipasang): `node --test netl
 ## Isi folder (untuk yang penasaran)
 
 ```
-dishify-pwa/
+dishio-pwa/
 ├── start.bat              ← klik dua kali untuk menjalankan
 ├── app.py                 ← server: menyajikan halaman + menjawab permintaan resep
-├── dishify/               ← bagian server
+├── dishio/               ← bagian server
 │   ├── config.py          ← membaca pengaturan dari .env
 │   ├── countries.py       ← daftar negara, mata uang, dan budget bawaan
 │   ├── prompts.py         ← prompt ke Gemini (resep, lama simpan bahan, pengganti bahan)
@@ -172,7 +172,7 @@ dishify-pwa/
 │   ├── manifest.webmanifest, sw.js, icons/  ← agar bisa diinstal (PWA)
 ├── netlify/               ← server versi online (JavaScript, untuk Netlify)
 │   ├── functions/api.mjs  ← pintu masuk semua alamat /api/...
-│   ├── dishify/           ← isi yang sama dengan folder dishify/ di atas
+│   ├── dishio/           ← isi yang sama dengan folder dishio/ di atas
 │   └── tests/             ← tes otomatis server Netlify
 ├── netlify.toml           ← pengaturan pemasangan online di Netlify
 ├── tests/                 ← tes otomatis server Python
@@ -191,4 +191,4 @@ dishify-pwa/
 
 ### Untuk tahap berikutnya
 
-- Negara baru cukup ditambahkan satu baris di `dishify/countries.py` dan satu baris di `netlify/dishify/countries.mjs`.
+- Negara baru cukup ditambahkan satu baris di `dishio/countries.py` dan satu baris di `netlify/dishio/countries.mjs`.

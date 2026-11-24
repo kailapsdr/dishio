@@ -1,5 +1,5 @@
 // Countries the user can pick in "Where do you live?".
-// Same list as dishify/countries.py (the Python server). If you add a
+// Same list as dishio/countries.py (the Python server). If you add a
 // country, add it in both files.
 
 function country(code, name, currency, locale, defaultBudget, priceExample, speechLangs) {

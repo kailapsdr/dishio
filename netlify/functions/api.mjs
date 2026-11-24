@@ -1,7 +1,7 @@
 // Netlify runs this file for every address that starts with /api/.
-// All the real work is in ../dishify/server.mjs.
+// All the real work is in ../dishio/server.mjs.
 
-import { createServer } from "../dishify/server.mjs";
+import { createServer } from "../dishio/server.mjs";
 
 let handle; // created once per running copy, so limits and caches are shared
 

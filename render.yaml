@@ -2,7 +2,7 @@
 # The Gemini key is NOT written here: Render asks for it once, privately.
 services:
   - type: web
-    name: dishify
+    name: dishio
     runtime: python
     plan: free
     region: singapore

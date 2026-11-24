@@ -6,7 +6,7 @@ import urllib.error
 
 import pytest
 
-from dishify.gemini_service import GeminiError, GeminiService, extract_json, parse_recipes
+from dishio.gemini_service import GeminiError, GeminiService, extract_json, parse_recipes
 
 RECIPE = {
     "title": "Egg Fried Rice",

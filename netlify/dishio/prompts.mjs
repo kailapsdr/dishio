@@ -1,4 +1,4 @@
-// Builds the prompts sent to Gemini. Same wording as dishify/prompts.py.
+// Builds the prompts sent to Gemini. Same wording as dishio/prompts.py.
 //
 // The situation texts live here, on the server. The browser only sends a
 // short id such as "quick_15", so nobody can slip their own instructions

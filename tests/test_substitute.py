@@ -3,9 +3,9 @@
 import pytest
 
 from app import create_app
-from dishify.countries import COUNTRIES
-from dishify.gemini_service import GeminiError, parse_substitutes
-from dishify.prompts import build_substitute_prompt
+from dishio.countries import COUNTRIES
+from dishio.gemini_service import GeminiError, parse_substitutes
+from dishio.prompts import build_substitute_prompt
 
 from .conftest import FakeGemini, make_settings
 

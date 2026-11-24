@@ -1,5 +1,5 @@
 // A small "how many requests per visitor" limiter. Same rules as
-// dishify/rate_limit.py.
+// dishio/rate_limit.py.
 //
 // On Netlify the counts live in the memory of one running copy of the
 // server. Netlify may start a fresh copy now and then, which resets the
