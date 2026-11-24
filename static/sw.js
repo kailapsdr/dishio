@@ -5,7 +5,7 @@
 // Files are fetched "network first", so changes show up on the next visit.
 // Raising the number in CACHE_NAME clears old saved copies.
 
-const CACHE_NAME = "dishify-v14";
+const CACHE_NAME = "dishify-v15";
 
 const APP_FILES = [
   "/",

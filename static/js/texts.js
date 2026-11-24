@@ -166,11 +166,11 @@ export const TEXT = {
     INVALID_BUDGET: "Please enter a budget greater than zero, using numbers only.",
     RATE_LIMITED: "You're going a bit fast. Please wait {seconds} seconds and try again.",
     NOT_CONFIGURED:
-      "Dishify isn't set up yet: the Gemini API key is missing. Add it to the .env file and restart Dishify.",
+      "Dishify isn't set up yet: the Gemini API key is missing. Add GEMINI_API_KEY to the .env file (on your computer) or to the Netlify environment variables (online).",
     AI_KEY_INVALID:
-      "The Gemini API key was rejected. Check GEMINI_API_KEY in the .env file and restart Dishify.",
+      "The Gemini API key was rejected. Check GEMINI_API_KEY in the .env file or in the Netlify environment variables.",
     AI_BUSY: "The AI has reached its usage limit for now. Please try again later.",
-    AI_MODEL_NOT_FOUND: "The Gemini model wasn't found. Check GEMINI_MODEL in the .env file.",
+    AI_MODEL_NOT_FOUND: "The Gemini model wasn't found. Check GEMINI_MODEL in the .env file or in the Netlify environment variables.",
     AI_UNAVAILABLE: "The AI service couldn't be reached. Please try again in a moment.",
     AI_BAD_RESPONSE: "The AI response could not be read. Please try again in a moment.",
     NO_RECIPES: "No recipes could be created from those ingredients. Try adding one or two more.",

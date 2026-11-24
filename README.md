@@ -79,20 +79,25 @@ Dishify akan muncul di Start Menu dan desktop seperti aplikasi biasa. **Catatan:
 
 ---
 
-## Memasang online (Render) supaya bisa dibuka dan diinstal dari HP
+## Memasang online (Netlify) supaya bisa dibuka dan diinstal dari HP
 
-Proyek ini sudah disiapkan untuk **Render** (gratis, tanpa kartu kredit). File `render.yaml` berisi semua pengaturannya, jadi kamu cukup memilih repo dan mengisi API key.
+Netlify gratis dan tidak meminta kartu kredit. Netlify tidak bisa menjalankan Python, jadi versi online memakai bagian server yang ditulis dalam JavaScript (folder `netlify/`). Isinya sama dengan server Python: prompt, cek input, batas permintaan, dan pesan error-nya sama. File `netlify.toml` berisi semua pengaturannya. Kamu tidak perlu menginstal apa pun, karena Netlify yang memprosesnya.
 
-1. Buka https://render.com, lalu daftar atau masuk memakai **akun GitHub**-mu.
-2. Klik **New → Blueprint**, lalu pilih repo **dishify**.
-3. Render akan menanyakan **GEMINI_API_KEY**. Tempel key Gemini-mu di sana (key ini disimpan rahasia oleh Render, tidak masuk GitHub).
-4. Klik **Apply** atau **Deploy**, lalu tunggu beberapa menit sampai statusnya **Live**.
-5. Buka alamat yang diberikan Render (misalnya `https://dishify-xxxx.onrender.com`) di Chrome HP, lalu pilih **Add to Home screen / Install app**.
+1. Buka https://app.netlify.com, lalu masuk memakai **akun GitHub**-mu.
+2. Klik **Add new project → Import an existing project → GitHub**, lalu pilih repo **dishify**.
+3. Di halaman pengaturan, biarkan semua isian seperti yang terisi otomatis (Publish directory: `static`).
+4. Klik **Add environment variables**, lalu isi:
+   - Key: `GEMINI_API_KEY`
+   - Value: key Gemini-mu (disimpan rahasia oleh Netlify, tidak masuk GitHub)
+5. Klik **Deploy**, lalu tunggu sampai statusnya **Published** (sekitar 1 menit).
+6. Buka alamat yang diberikan Netlify (misalnya `https://nama-acak.netlify.app`) di Chrome HP, lalu pilih **Add to Home screen / Install app**. Nama alamatnya bisa diganti di **Project configuration → Change project name**.
 
 Hal yang perlu diketahui:
-- **Situs "tidur" kalau 15 menit tidak dipakai.** Pembukaan berikutnya butuh sekitar 1 menit untuk bangun. Setelah itu normal lagi.
-- **Update otomatis.** Setiap kali kamu push perubahan lewat GitHub Desktop, Render memasang versi barunya sendiri.
-- **Alamatnya publik.** Siapa pun yang tahu alamatnya bisa memakai Dishify, dan pemakaiannya memakai kuota Gemini-mu. Batas per pengunjung tetap berlaku.
+- **Tidak ada "tidur".** Situs langsung terbuka kapan pun.
+- **Update otomatis.** Setiap kali kamu push perubahan lewat GitHub Desktop, Netlify memasang versi barunya sendiri.
+- **Kalau mengganti key**, ubah nilainya di **Project configuration → Environment variables**, lalu buka **Deploys → Trigger deploy → Deploy project** supaya key baru dipakai.
+- **Alamatnya publik.** Siapa pun yang tahu alamatnya bisa memakai Dishify, dan pemakaiannya memakai kuota Gemini-mu. Batas per pengunjung tetap berlaku, tapi di Netlify hitungannya bisa ter-reset sewaktu-waktu, jadi batas ini lebih longgar daripada di laptop.
+- **Paket gratis Netlify** memberi 300 kredit per bulan. Untuk pemakaian pribadi ini lebih dari cukup.
 
 ## Membuka dari HP
 
@@ -100,7 +105,7 @@ Hal yang perlu diketahui:
   1. Di file `.env`, ubah `HOST=127.0.0.1` menjadi `HOST=0.0.0.0`, lalu jalankan ulang Dishify. Kalau Windows bertanya soal firewall, izinkan untuk jaringan *Private*.
   2. Cari alamat IP laptop: di Command Prompt ketik `ipconfig`, lalu lihat baris **IPv4 Address** (misalnya `192.168.1.5`).
   3. Di HP, buka `http://192.168.1.5:5000`.
-- **Instal ke layar utama HP**: browser hanya mengizinkan instalasi dari alamat **https://**. Pakai alamat Render (lihat bagian di atas). Lewat alamat `http://192.168...`, aplikasi tetap bisa dipakai, tapi tidak bisa diinstal.
+- **Instal ke layar utama HP**: browser hanya mengizinkan instalasi dari alamat **https://**. Pakai alamat Netlify (lihat bagian di atas). Lewat alamat `http://192.168...`, aplikasi tetap bisa dipakai, tapi tidak bisa diinstal.
 
 ---
 
@@ -112,7 +117,9 @@ Tes memeriksa fitur inti: cek input, batas permintaan, isi prompt, pembacaan jaw
 cd C:\Users\LENOVO\tugas2\dishify-pwa
 .venv\Scripts\python -m pytest
 ```
-Kalau semuanya lulus, akan muncul tulisan seperti `67 passed`.
+Kalau semuanya lulus, akan muncul tulisan seperti `95 passed`.
+
+Tes untuk server Netlify butuh Node.js (tidak wajib dipasang): `node --test netlify/tests/server.test.mjs`.
 
 ---
 
@@ -126,6 +133,7 @@ Kalau semuanya lulus, akan muncul tulisan seperti `67 passed`.
 | "The Gemini API key was rejected" | Key salah atau sudah dihapus. Buat key baru (Langkah 2). |
 | "The AI has reached its usage limit" | Kuota gratis Gemini habis untuk sementara. Coba lagi nanti. |
 | "You're going a bit fast…" | Batas permintaan Dishify tercapai. Tunggu sesuai detik yang tertulis. Batasnya bisa diubah di `.env`. |
+| Di versi online muncul "Dishify isn't set up yet" | `GEMINI_API_KEY` belum diisi di Netlify. Isi di **Environment variables**, lalu **Trigger deploy**. |
 | "Can't reach Dishify…" | Jendela hitam (server) tertutup. Jalankan `start.bat` lagi. |
 | Jendela hitam menulis `Address already in use` | Dishify sudah jalan di jendela lain, atau port 5000 dipakai aplikasi lain. Tutup jendela itu atau ganti `PORT=5001` di `.env`. |
 | Pemasangan paket gagal di tengah jalan | Hapus folder `.venv`, pastikan internet menyala, lalu jalankan `start.bat` lagi. |
@@ -160,21 +168,25 @@ dishify-pwa/
 │   ├── js/icons.js        ← ikon-ikon kecil
 │   ├── js/layout.js       ← pegangan untuk mengatur lebar sisi kiri/kanan
 │   ├── manifest.webmanifest, sw.js, icons/  ← agar bisa diinstal (PWA)
-├── tests/                 ← tes otomatis
+├── netlify/               ← server versi online (JavaScript, untuk Netlify)
+│   ├── functions/api.mjs  ← pintu masuk semua alamat /api/...
+│   ├── dishify/           ← isi yang sama dengan folder dishify/ di atas
+│   └── tests/             ← tes otomatis server Netlify
+├── netlify.toml           ← pengaturan pemasangan online di Netlify
+├── tests/                 ← tes otomatis server Python
 ├── requirements.txt       ← daftar paket Python
-├── render.yaml            ← pengaturan pemasangan online di Render
-├── .python-version        ← versi Python yang dipakai Render
+├── render.yaml, .python-version  ← pengaturan lama untuk Render (tidak dipakai, boleh diabaikan)
 ├── .env.example           ← contoh pengaturan (tanpa key)
 └── .env                   ← pengaturan asli + key kamu (dibuat sendiri, rahasia)
 ```
 
 ### Catatan keamanan
 
-- API key **hanya** ada di file `.env` di laptopmu. Server yang memakainya untuk menghubungi Gemini. Halaman web tidak pernah menerima key.
+- API key **hanya** ada di file `.env` di laptopmu dan di *Environment variables* Netlify. Hanya server yang memakainya untuk menghubungi Gemini. Halaman web tidak pernah menerima key.
 - `.env` sudah masuk `.gitignore`, jadi tidak akan ikut ter-upload kalau nanti proyek ini dimasukkan ke GitHub.
 - Input dicek di server: bahan tidak boleh kosong dan maksimal 300 karakter, serta pilihan negara dan situasi harus dari daftar yang tersedia.
 - Setiap pengguna dibatasi 5 permintaan resep per menit dan 50 per hari, 20 pertanyaan "berapa lama bahan ini tahan" per menit dan 200 per hari, serta 10 pertanyaan *swap* per menit dan 100 per hari (semuanya bisa diubah di `.env`). Jawaban lama simpan dan *swap* juga diingat server, jadi pertanyaan yang sama tidak dikirim dua kali ke Gemini.
 
 ### Untuk tahap berikutnya
 
-- Negara baru cukup ditambahkan satu baris di `dishify/countries.py`.
+- Negara baru cukup ditambahkan satu baris di `dishify/countries.py` dan satu baris di `netlify/dishify/countries.mjs`.
