@@ -125,3 +125,46 @@ test("big requests and unknown addresses", async () => {
   const wrong = await handle(new Request("https://dishio.test/api/recipes"), {});
   assert.equal(wrong.status, 405);
 });
+
+test("a busy model hands over to the backup model", async () => {
+  for (const status of [503, 429, 500, 404]) {
+    const asked = [];
+    const handle = server({ GEMINI_FALLBACK_MODELS: "backup-a,backup-b" }, async (url) => {
+      asked.push(decodeURIComponent(url.split("/models/")[1].split(":")[0]));
+      return asked.length === 1 ? new Response("{}", { status }) : geminiReply(RECIPES);
+    });
+    const res = await post(handle, "/api/recipes", { ingredients: "rice" });
+    assert.equal(res.status, 200);
+    assert.deepEqual(asked, ["gemini-3.5-flash-lite", "backup-a"]);
+  }
+});
+
+test("backups are not used for a bad key, and 'none' turns them off", async () => {
+  let calls = 0;
+  const badKey = server({ GEMINI_FALLBACK_MODELS: "backup-a" }, async () => {
+    calls += 1;
+    return new Response("{}", { status: 403 });
+  });
+  assert.equal((await (await post(badKey, "/api/recipes", { ingredients: "rice" })).json()).error.code, "AI_KEY_INVALID");
+  assert.equal(calls, 1);
+
+  calls = 0;
+  const noBackup = server({ GEMINI_FALLBACK_MODELS: "none" }, async () => {
+    calls += 1;
+    return new Response("{}", { status: 503 });
+  });
+  const res = await post(noBackup, "/api/recipes", { ingredients: "rice" });
+  assert.equal((await res.json()).error.upstreamStatus, 503);
+  assert.equal(calls, 1);
+});
+
+test("by default the backups are 3.1 Flash-Lite, then 2.5 Flash", async () => {
+  const asked = [];
+  const handle = server({}, async (url) => {
+    asked.push(url.split("/models/")[1].split(":")[0]);
+    return new Response("{}", { status: 503 });
+  });
+  const res = await post(handle, "/api/recipes", { ingredients: "rice" });
+  assert.equal((await res.json()).error.upstreamStatus, 503);
+  assert.deepEqual(asked, ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-2.5-flash"]);
+});

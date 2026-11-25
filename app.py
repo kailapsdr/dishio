@@ -70,6 +70,7 @@ def create_app(settings: Settings | None = None, gemini: GeminiService | None = 
         api_key=settings.gemini_api_key,
         model=settings.gemini_model,
         timeout=settings.gemini_timeout_seconds,
+        fallback_models=settings.gemini_fallback_models,
     )
     limiter = RateLimiter(settings.rate_limit_per_minute, settings.rate_limit_per_day)
     # "How long does this keep?" has its own, separate limit.

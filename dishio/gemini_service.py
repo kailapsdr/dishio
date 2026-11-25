@@ -9,11 +9,17 @@ import json
 import re
 import socket
 import sys
+import time
 import urllib.error
 import urllib.request
 
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 MAX_RECIPES = 5
+
+# With backup models, an attempt that is not the last may use this share of
+# the time left, so the next model still gets a chance.
+_ATTEMPT_SHARE = 0.6
+_MIN_ATTEMPT_SECONDS = 3
 
 _STEP_PREFIX = re.compile(r"^\s*(step\s*)?\d+\s*[:.)\-–]\s*", re.IGNORECASE)
 
@@ -21,11 +27,14 @@ _STEP_PREFIX = re.compile(r"^\s*(step\s*)?\d+\s*[:.)\-–]\s*", re.IGNORECASE)
 class GeminiError(Exception):
     """Something went wrong with the AI. ``code`` is shown to the web page."""
 
-    def __init__(self, code: str, message: str, status: int = 502):
+    def __init__(self, code: str, message: str, status: int = 502, try_next_model: bool = False):
         super().__init__(message)
         self.code = code
         self.message = message
         self.status = status
+        # True when another model might succeed (overloaded, rate limited,
+        # unknown model, no answer). False for a bad key or a bad answer.
+        self.try_next_model = try_next_model
 
 
 def _http_post(url: str, headers: dict, body: bytes, timeout: int) -> dict:
@@ -39,11 +48,21 @@ def _http_post(url: str, headers: dict, body: bytes, timeout: int) -> dict:
 
 
 class GeminiService:
-    def __init__(self, api_key: str, model: str, timeout: int = 60, transport=_http_post):
+    def __init__(
+        self,
+        api_key: str,
+        model: str,
+        timeout: int = 60,
+        transport=_http_post,
+        fallback_models=(),
+    ):
         self._api_key = api_key
         self.model = model
-        self.timeout = timeout
+        # Main model first, then the backups (without repeats).
+        self.models = list(dict.fromkeys([model, *fallback_models]))
+        self.timeout = timeout  # total time for all attempts together
         self._transport = transport
+        self._clock = time.monotonic
 
     def generate_recipes(self, prompt: str) -> list[dict]:
         raw_text = self._call(prompt)
@@ -59,7 +78,33 @@ class GeminiService:
         return parse_substitutes(self._call(prompt, temperature=0.4))
 
     def _call(self, prompt: str, temperature: float = 0.85) -> str:
-        url = API_URL.format(model=self.model)
+        """Ask the main model; if it is busy or down, ask the next one."""
+        deadline = self._clock() + self.timeout
+        first_error = None
+        for index, model in enumerate(self.models):
+            remaining = deadline - self._clock()
+            if first_error and remaining < _MIN_ATTEMPT_SECONDS:
+                break
+            is_last = index == len(self.models) - 1
+            timeout = remaining if is_last else max(_MIN_ATTEMPT_SECONDS, remaining * _ATTEMPT_SHARE)
+            try:
+                text = self._call_model(model, prompt, temperature, timeout)
+            except GeminiError as err:
+                if not err.try_next_model:
+                    raise
+                first_error = first_error or err
+                if not is_last:
+                    print(f"Gemini model {model} failed ({err.code}); trying {self.models[index + 1]}",
+                          file=sys.stderr)
+                continue
+            if index:
+                print(f"Gemini answered with backup model {model}", file=sys.stderr)
+            return text
+        # Every model failed: report the main model's problem.
+        raise first_error
+
+    def _call_model(self, model: str, prompt: str, temperature: float, timeout: float) -> str:
+        url = API_URL.format(model=model)
         headers = {
             "Content-Type": "application/json",
             "x-goog-api-key": self._api_key,
@@ -75,7 +120,7 @@ class GeminiService:
         ).encode("utf-8")
 
         try:
-            data = self._transport(url, headers, body, self.timeout)
+            data = self._transport(url, headers, body, timeout)
         except urllib.error.HTTPError as err:
             raise _error_from_http(err) from None
         except (urllib.error.URLError, socket.timeout, TimeoutError, ConnectionError, OSError):
@@ -83,6 +128,7 @@ class GeminiService:
                 "AI_UNAVAILABLE",
                 "Could not reach the AI service. Please check the internet "
                 "connection of the computer running Dishio and try again.",
+                try_next_model=True,
             ) from None
         except ValueError:
             raise GeminiError("AI_BAD_RESPONSE", "The AI response could not be read.") from None
@@ -97,21 +143,28 @@ def _error_from_http(err: urllib.error.HTTPError) -> GeminiError:
         detail = ""
     # Gemini's own error text, shown in the Dishio window (never the key).
     print(f"Gemini API error {err.code}: {detail[:400]}", file=sys.stderr)
+    error = _error_for_status(err.code, detail)
+    # Busy (429), unknown model (404) or a server problem (5xx): another model may work.
+    error.try_next_model = error.code != "AI_KEY_INVALID" and (err.code in (404, 429) or err.code >= 500)
+    return error
+
+
+def _error_for_status(code: int, detail: str) -> GeminiError:
     lowered = detail.lower()
 
-    if err.code in (401, 403) or "api_key_invalid" in lowered or "api key not valid" in lowered:
+    if code in (401, 403) or "api_key_invalid" in lowered or "api key not valid" in lowered:
         return GeminiError(
             "AI_KEY_INVALID",
             "The Gemini API key was rejected. Check GEMINI_API_KEY in the .env file.",
             status=503,
         )
-    if err.code == 429:
+    if code == 429:
         return GeminiError(
             "AI_BUSY",
             "The AI has reached its usage limit for now. Please try again later.",
             status=503,
         )
-    if err.code == 404:
+    if code == 404:
         return GeminiError(
             "AI_MODEL_NOT_FOUND",
             "The Gemini model name was not found. Check GEMINI_MODEL in the .env file.",

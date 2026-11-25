@@ -134,3 +134,82 @@ def test_empty_or_blocked_reply():
         with pytest.raises(GeminiError) as info:
             service(FakeTransport(reply)).generate_recipes("p")
         assert info.value.code == "AI_BAD_RESPONSE"
+
+
+# -- Backup models ------------------------------------------------------------
+class SequenceTransport:
+    """Answers each call with the next item: an exception to raise or a reply."""
+
+    def __init__(self, *outcomes):
+        self.outcomes = list(outcomes)
+        self.models = []
+
+    def __call__(self, url, headers, body, timeout):
+        self.models.append(url.split("/models/")[1].split(":")[0])
+        outcome = self.outcomes.pop(0)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+
+def backup_service(transport, fallback=("backup-a", "backup-b")):
+    return GeminiService(
+        api_key="secret-key", model="main", transport=transport, fallback_models=fallback
+    )
+
+
+OK_REPLY = gemini_reply(json.dumps({"recipes": [RECIPE]}))
+
+
+@pytest.mark.parametrize(
+    "error", [http_error(503), http_error(429), http_error(500), http_error(404), TimeoutError()]
+)
+def test_busy_model_hands_over_to_the_backup(error):
+    transport = SequenceTransport(error, OK_REPLY)
+    recipes = backup_service(transport).generate_recipes("p")
+    assert recipes[0]["title"] == "Egg Fried Rice"
+    assert transport.models == ["main", "backup-a"]
+
+
+def test_all_models_busy_reports_the_main_problem():
+    transport = SequenceTransport(http_error(503), http_error(429), http_error(404))
+    with pytest.raises(GeminiError) as info:
+        backup_service(transport).generate_recipes("p")
+    assert transport.models == ["main", "backup-a", "backup-b"]
+    assert info.value.code == "AI_UNAVAILABLE"
+
+
+@pytest.mark.parametrize(
+    "error",
+    [http_error(403), http_error(400, '{"error": {"details": [{"reason": "API_KEY_INVALID"}]}}'),
+     http_error(400)],
+)
+def test_key_or_request_problems_do_not_use_the_backup(error):
+    transport = SequenceTransport(error, OK_REPLY)
+    with pytest.raises(GeminiError):
+        backup_service(transport).generate_recipes("p")
+    assert transport.models == ["main"]
+
+
+def test_blocked_answer_does_not_use_the_backup():
+    transport = SequenceTransport({"candidates": []}, OK_REPLY)
+    with pytest.raises(GeminiError) as info:
+        backup_service(transport).generate_recipes("p")
+    assert info.value.code == "AI_BAD_RESPONSE"
+    assert transport.models == ["main"]
+
+
+def test_main_model_is_not_repeated_as_backup():
+    assert backup_service(None, fallback=("main", "backup-a", "backup-a")).models == ["main", "backup-a"]
+
+
+def test_backup_models_setting(monkeypatch, tmp_path):
+    from dishio.config import DEFAULT_FALLBACK_MODELS, load_settings
+
+    empty_env = tmp_path / "none.env"
+    monkeypatch.delenv("GEMINI_FALLBACK_MODELS", raising=False)
+    assert load_settings(empty_env).gemini_fallback_models == DEFAULT_FALLBACK_MODELS
+    monkeypatch.setenv("GEMINI_FALLBACK_MODELS", " model-x , model-y ,")
+    assert load_settings(empty_env).gemini_fallback_models == ("model-x", "model-y")
+    monkeypatch.setenv("GEMINI_FALLBACK_MODELS", "none")
+    assert load_settings(empty_env).gemini_fallback_models == ()

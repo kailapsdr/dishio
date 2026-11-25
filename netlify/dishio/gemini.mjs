@@ -7,6 +7,11 @@ const MAX_RECIPES = 5;
 const MAX_SHELF_LIFE_DAYS = 365;
 const MAX_SUBSTITUTES = 3;
 
+// With backup models, an attempt that is not the last may use this share of
+// the time left, so the next model still gets a chance.
+const ATTEMPT_SHARE = 0.6;
+const MIN_ATTEMPT_MS = 3_000;
+
 const STEP_PREFIX = /^\s*(step\s*)?\d+\s*[:.)\-–]\s*/i;
 
 export class GeminiError extends Error {
@@ -16,14 +21,19 @@ export class GeminiError extends Error {
     this.status = status;
     // HTTP status Gemini itself answered with (e.g. 503), to help find problems.
     this.upstreamStatus = upstreamStatus;
+    // True when another model might succeed (overloaded, rate limited,
+    // unknown model, no answer). False for a bad key or a bad answer.
+    this.tryNextModel = false;
   }
 }
 
 export class GeminiService {
-  constructor({ apiKey, model, timeoutMs = 50_000, fetchImpl = globalThis.fetch }) {
+  constructor({ apiKey, model, fallbackModels = [], timeoutMs = 50_000, fetchImpl = globalThis.fetch }) {
     this.apiKey = apiKey;
     this.model = model;
-    this.timeoutMs = timeoutMs;
+    // Main model first, then the backups (without repeats).
+    this.models = [...new Set([model, ...fallbackModels])];
+    this.timeoutMs = timeoutMs; // total time for all attempts together
     this.fetch = fetchImpl;
   }
 
@@ -41,8 +51,32 @@ export class GeminiService {
     return parseSubstitutes(await this.call(prompt, 0.4));
   }
 
+  /** Ask the main model; if it is busy or down, ask the next one. */
   async call(prompt, temperature = 0.85) {
-    const url = API_URL.replace("{model}", encodeURIComponent(this.model));
+    const deadline = Date.now() + this.timeoutMs;
+    let firstError = null;
+    for (let i = 0; i < this.models.length; i += 1) {
+      const model = this.models[i];
+      const remaining = deadline - Date.now();
+      if (firstError && remaining < MIN_ATTEMPT_MS) break;
+      const isLast = i === this.models.length - 1;
+      const timeoutMs = isLast ? remaining : Math.max(MIN_ATTEMPT_MS, remaining * ATTEMPT_SHARE);
+      try {
+        const text = await this.callModel(model, prompt, temperature, timeoutMs);
+        if (i > 0) console.error(`Gemini answered with backup model ${model}`);
+        return text;
+      } catch (err) {
+        if (!(err instanceof GeminiError) || !err.tryNextModel) throw err;
+        firstError ??= err;
+        if (!isLast) console.error(`Gemini model ${model} failed (${err.code}); trying ${this.models[i + 1]}`);
+      }
+    }
+    // Every model failed: report the main model's problem.
+    throw firstError;
+  }
+
+  async callModel(model, prompt, temperature, timeoutMs) {
+    const url = API_URL.replace("{model}", encodeURIComponent(model));
     const body = JSON.stringify({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: { temperature, responseMimeType: "application/json" },
@@ -54,13 +88,12 @@ export class GeminiService {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-goog-api-key": this.apiKey },
         body,
-        signal: AbortSignal.timeout(this.timeoutMs),
+        signal: AbortSignal.timeout(Math.max(1, Math.round(timeoutMs))),
       });
     } catch {
-      throw new GeminiError(
-        "AI_UNAVAILABLE",
-        "Could not reach the AI service. Please try again in a moment.",
-      );
+      const err = new GeminiError("AI_UNAVAILABLE", "Could not reach the AI service. Please try again in a moment.");
+      err.tryNextModel = true;
+      throw err;
     }
 
     if (!response.ok) {
@@ -88,6 +121,8 @@ function errorFromHttp(status, detail) {
   console.error(`Gemini API error ${status}: ${String(detail).slice(0, 400)}`);
   const err = errorFromStatus(status, detail);
   err.upstreamStatus = status;
+  // Busy (429), unknown model (404) or a server problem (5xx): another model may work.
+  err.tryNextModel = err.code !== "AI_KEY_INVALID" && (status === 404 || status === 429 || status >= 500);
   return err;
 }
 

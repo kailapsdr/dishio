@@ -98,6 +98,7 @@ Hal yang perlu diketahui:
 - **Tidak ada "tidur".** Situs langsung terbuka kapan pun.
 - **Update otomatis.** Setiap kali kamu push perubahan lewat GitHub Desktop, Netlify memasang versi barunya sendiri.
 - **Kalau mengganti key**, ubah nilainya di **Project configuration → Environment variables**, lalu buka **Deploys → Trigger deploy → Deploy project** supaya key baru dipakai.
+- **Model cadangan.** Kalau model utama (`GEMINI_MODEL`) sedang penuh, kena batas kuota, atau tidak menjawab, Dishio otomatis mencoba model cadangan: `gemini-3.1-flash-lite`, lalu `gemini-2.5-flash`. Urutannya bisa diganti lewat variabel `GEMINI_FALLBACK_MODELS` (dipisah koma, atau `none` untuk mematikan), di `.env` maupun di Environment variables Netlify. Model yang dipakai tercatat di **Logs → Functions**.
 - **Alamatnya publik.** Siapa pun yang tahu alamatnya bisa memakai Dishio, dan pemakaiannya memakai kuota Gemini-mu. Batas per pengunjung tetap berlaku, tapi di Netlify hitungannya bisa ter-reset sewaktu-waktu, jadi batas ini lebih longgar daripada di laptop.
 - **Paket gratis Netlify** memberi 300 kredit per bulan. Untuk pemakaian pribadi ini lebih dari cukup.
 
@@ -133,7 +134,7 @@ Tes untuk server Netlify butuh Node.js (tidak wajib dipasang): `node --test netl
 | `'py' is not recognized` atau "Python belum terpasang" | Pasang Python lagi dan centang **Add python.exe to PATH**. |
 | Di aplikasi muncul "Dishio isn't set up yet" | Key belum diisi. Buka `.env`, isi `GEMINI_API_KEY=`, simpan, lalu jalankan ulang `start.bat`. |
 | "The Gemini API key was rejected" | Key salah atau sudah dihapus. Buat key baru (Langkah 2). |
-| "The AI has reached its usage limit" | Kuota gratis Gemini habis untuk sementara. Coba lagi nanti. |
+| "The AI has reached its usage limit" | Kuota gratis Gemini habis untuk sementara, termasuk di model cadangan. Coba lagi nanti. |
 | "You're going a bit fast…" | Batas permintaan Dishio tercapai. Tunggu sesuai detik yang tertulis. Batasnya bisa diubah di `.env`. |
 | Di versi online muncul "Dishio isn't set up yet" | `GEMINI_API_KEY` belum diisi di Netlify. Isi di **Environment variables**, lalu **Trigger deploy**. |
 | "Can't reach Dishio…" | Jendela hitam (server) tertutup. Jalankan `start.bat` lagi. |

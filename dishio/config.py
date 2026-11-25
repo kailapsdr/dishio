@@ -12,6 +12,10 @@ from dotenv import load_dotenv
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
+# Tried in this order when the main model is overloaded, rate limited or down.
+# Each Gemini model has its own free quota, so a backup model usually still works.
+DEFAULT_FALLBACK_MODELS = ("gemini-3.1-flash-lite", "gemini-2.5-flash")
+
 # Values that mean "the key has not been filled in yet".
 _PLACEHOLDER_KEYS = {"", "paste-your-new-key-here", "your_api_key_here"}
 
@@ -26,10 +30,21 @@ def _int(name: str, default: int, minimum: int = 1) -> int:
         return default
 
 
+def _model_list(name: str, default: tuple[str, ...]) -> tuple[str, ...]:
+    """Comma-separated model names. Empty = the default list, "none" = no backups."""
+    raw = os.getenv(name, "").strip()
+    if not raw:
+        return default
+    if raw.lower() == "none":
+        return ()
+    return tuple(m.strip() for m in raw.split(",") if m.strip())
+
+
 @dataclass(frozen=True)
 class Settings:
     gemini_api_key: str = field(default="", repr=False)  # repr=False: never printed
     gemini_model: str = "gemini-3.5-flash-lite"
+    gemini_fallback_models: tuple[str, ...] = DEFAULT_FALLBACK_MODELS
     gemini_timeout_seconds: int = 60
     rate_limit_per_minute: int = 5
     rate_limit_per_day: int = 50
@@ -56,6 +71,7 @@ def load_settings(env_file: Path | None = None) -> Settings:
     return Settings(
         gemini_api_key=os.getenv("GEMINI_API_KEY", "").strip(),
         gemini_model=os.getenv("GEMINI_MODEL", "").strip() or "gemini-3.5-flash-lite",
+        gemini_fallback_models=_model_list("GEMINI_FALLBACK_MODELS", DEFAULT_FALLBACK_MODELS),
         gemini_timeout_seconds=_int("GEMINI_TIMEOUT_SECONDS", 60),
         rate_limit_per_minute=_int("RATE_LIMIT_PER_MINUTE", 5),
         rate_limit_per_day=_int("RATE_LIMIT_PER_DAY", 50),

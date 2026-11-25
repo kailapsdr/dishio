@@ -22,6 +22,10 @@ import {
 } from "./validation.mjs";
 
 const MAX_BODY_BYTES = 16 * 1024; // requests are tiny; refuse big ones
+// Tried in this order when the main model is overloaded, rate limited or down.
+// Each Gemini model has its own free quota, so a backup model usually still works.
+export const DEFAULT_FALLBACK_MODELS = ["gemini-3.1-flash-lite", "gemini-2.5-flash"];
+
 const PLACEHOLDER_KEYS = new Set(["", "paste-your-new-key-here", "your_api_key_here"]);
 
 function number(env, name, fallback, minimum = 1) {
@@ -31,13 +35,23 @@ function number(env, name, fallback, minimum = 1) {
   return Number.isNaN(n) ? fallback : Math.max(minimum, n);
 }
 
+/** Comma-separated model names. Empty = the default list, "none" = no backups. */
+function modelList(env, name, fallback) {
+  const raw = String(env[name] ?? "").trim();
+  if (!raw) return [...fallback];
+  if (raw.toLowerCase() === "none") return [];
+  return raw.split(",").map((m) => m.trim()).filter(Boolean);
+}
+
 export function loadSettings(env) {
   const key = String(env.GEMINI_API_KEY ?? "").trim();
   return {
     geminiApiKey: key,
     geminiConfigured: !PLACEHOLDER_KEYS.has(key.toLowerCase()),
     geminiModel: String(env.GEMINI_MODEL ?? "").trim() || "gemini-3.5-flash-lite",
+    geminiFallbackModels: modelList(env, "GEMINI_FALLBACK_MODELS", DEFAULT_FALLBACK_MODELS),
     // Netlify stops a function after 60 seconds, so wait a bit less.
+    // This is the total for the main model and its backups together.
     geminiTimeoutMs: Math.min(number(env, "GEMINI_TIMEOUT_SECONDS", 50), 55) * 1000,
     ratePerMinute: number(env, "RATE_LIMIT_PER_MINUTE", 5),
     ratePerDay: number(env, "RATE_LIMIT_PER_DAY", 50),
@@ -70,6 +84,7 @@ export function createServer(env, { fetchImpl = globalThis.fetch, clock } = {}) 
   const gemini = new GeminiService({
     apiKey: settings.geminiApiKey,
     model: settings.geminiModel,
+    fallbackModels: settings.geminiFallbackModels,
     timeoutMs: settings.geminiTimeoutMs,
     fetchImpl,
   });
